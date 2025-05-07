@@ -59,7 +59,7 @@
     - target: acceleration_module.acceleration
       delta:
         multiply: 0.6
-    - target: engine_temp
+    - target: engine_module.engine_temp
       delta:
         add: 8
   cooldown: 2

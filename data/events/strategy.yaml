@@ -60,7 +60,7 @@
   - key: B
     text: 再撐一圈，賭個天降奇蹟
     consequences:
-    - target: engine_temp
+    - target: engine_module.engine_temp
       delta:
         add: 5
     - target: durability_module.durability
