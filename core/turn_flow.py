@@ -1,5 +1,5 @@
 import random
-from core.event_engine import load_events_from_folder
+from core.logic_rules import apply_logic_rules
 
 class TurnFlow:
     def __init__(self, car_state, segments, seed=None, events=None):
@@ -9,25 +9,24 @@ class TurnFlow:
         self.log = []
         self.seed = seed or random.randint(1000, 999999)
         self.random = random.Random(self.seed)
-        self.all_events = events or load_events_from_folder("data/events")
+        self.all_events = events or []
 
     def get_current_segment(self):
         index = self.current_turn % len(self.segments)
         return self.segments[index]
 
     def simulate_turn(self):
-        from core.logic_rules import apply_logic_rules
         self.current_turn += 1
         segment = self.get_current_segment()
         pre_state = self.car_state.summary()
 
-        # 模擬 context：每種條件都滿足一點
+        # 模擬 context
         context = {
             "fuel": self.car_state.get("fuel_module.fuel"),
             "tire_wear": self.car_state.get("tire_module.tire_wear"),
             "distance_to_ai": 1.5,
             "slipstream_active": True,
-            "laps_completed": 10
+            "laps_completed": self.car_state.get("race_info_module.laps_completed")
         }
 
         triggered_event = None
@@ -41,6 +40,7 @@ class TurnFlow:
                     triggered_event = event
                     event.apply_option("A", self.car_state)
                     triggered_name = event.name
+                    event.cooldown_remaining = event.cooldown  # 啟動冷卻
 
         post_state = self.car_state.summary()
         self.log.append({
@@ -56,7 +56,13 @@ class TurnFlow:
         print(f"第 {self.current_turn} 回合 - 區段：{segment.track_type.value} - 可觸發事件：{candidates}")
         if triggered_event:
             print(f"→ 實際觸發事件：{triggered_event.name}")
-            
+
+        # 自動遞減冷卻回合
+        for event in self.all_events:
+            if event.cooldown_remaining > 0:
+                event.cooldown_remaining -= 1
+
+        # 套用屬性邏輯連動
         apply_logic_rules(self.car_state)
 
     def print_log(self):

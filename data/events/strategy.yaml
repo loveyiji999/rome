@@ -32,6 +32,7 @@
     - target: durability_module.durability
       delta:
         add: 10
+  cooldown: 2
 - id: strat_fuel_strategy_update
   category: 策略事件
   name: 燃油策略更新
@@ -65,6 +66,7 @@
     - target: durability_module.durability
       delta:
         add: -3
+  cooldown: 2
 - id: strat_tire_strategy_call
   category: 策略事件
   name: 輪胎策略通知
@@ -98,6 +100,7 @@
     - target: speed_module.speed
       delta:
         multiply: 1.05
+  cooldown: 2
 - id: strat_early_pit_window
   category: 策略事件
   name: 提前進站窗口
@@ -131,6 +134,7 @@
     - target: durability_module.durability
       delta:
         add: -3
+  cooldown: 2
 - id: strat_fuel_mode_change
   category: 策略事件
   name: 切換燃料模式
@@ -164,6 +168,7 @@
     - target: engine_module.engine_temp
       delta:
         add: 2
+  cooldown: 2
 - id: strat_tire_compound_adjust
   category: 策略事件
   name: 更換輪胎配方
@@ -195,6 +200,7 @@
     - target: tire_module.grip_coefficient
       delta:
         multiply: 0.95
+  cooldown: 2
 - id: strat_yellow_flag_response
   category: 策略事件
   name: 黃旗區應對
@@ -223,6 +229,7 @@
     - target: race_info_module.position
       delta:
         add: -1
+  cooldown: 2
 - id: strat_drs_available
   category: 策略事件
   name: DRS 區開啟
@@ -247,6 +254,7 @@
   - key: B
     text: 觀察 AI 騷擾再啟
     consequences: []
+  cooldown: 2
 - id: strat_expected_rain_change
   category: 策略事件
   name: 天氣變化預警
@@ -275,6 +283,7 @@
     - target: durability_module.durability
       delta:
         add: -5
+  cooldown: 2
 - id: strat_team_gap_analysis
   category: 策略事件
   name: 隊友距離分析
@@ -305,6 +314,7 @@
     - target: durability_module.durability
       delta:
         add: 5
+  cooldown: 2
 - id: strat_virtual_safety_car
   category: 策略事件
   name: 虛擬安全車應對
@@ -332,6 +342,7 @@
     - target: durability_module.durability
       delta:
         add: -4
+  cooldown: 2
 - id: strat_push_to_pass_window
   category: 策略事件
   name: 推進模式開啟
@@ -357,6 +368,7 @@
   - key: B
     text: 延後使用壓尾段
     consequences: []
+  cooldown: 2
 - id: strat_penalty_notice
   category: 策略事件
   name: 裁判罰秒通知
@@ -384,6 +396,7 @@
     - target: durability_module.durability
       delta:
         add: -3
+  cooldown: 2
 - id: strat_tire_temp_monitoring
   category: 策略事件
   name: 輪胎溫度監測異常
@@ -415,6 +428,7 @@
     - target: durability_module.durability
       delta:
         add: -3
+  cooldown: 2
 - id: strat_gap_to_leader_notice
   category: 策略事件
   name: 與領先者時間差通知
@@ -439,6 +453,7 @@
   - key: B
     text: 穩定節奏待錯誤
     consequences: []
+  cooldown: 2
 - id: strat_defensive_positioning
   category: 策略事件
   name: 防守內線提醒
@@ -468,6 +483,7 @@
     - target: race_info_module.position
       delta:
         add: 1
+  cooldown: 2
 - id: strat_risk_level_update
   category: 策略事件
   name: 風險等級更新
@@ -490,6 +506,7 @@
     - target: durability_module.durability
       delta:
         add: -4
+  cooldown: 2
 - id: strat_battery_save_mode
   category: 策略事件
   name: 電池節能模式啟用
@@ -514,6 +531,7 @@
     - target: durability_module.durability
       delta:
         add: -2
+  cooldown: 2
 - id: strat_final_lap_push
   category: 策略事件
   name: 最後一圈全力衝刺
@@ -540,6 +558,7 @@
   - key: B
     text: 穩穩完賽
     consequences: []
+  cooldown: 2
 - id: strat_team_overtake_permission
   category: 策略事件
   name: 隊友請求換位
@@ -567,6 +586,7 @@
     - target: durability_module.durability
       delta:
         add: -2
+  cooldown: 2
 - id: strat_brake_temp_management
   category: 策略事件
   name: 煞車溫度管理
@@ -592,6 +612,7 @@
     - target: durability_module.durability
       delta:
         add: -4
+  cooldown: 2
 - id: strat_sector_time_alert
   category: 策略事件
   name: 區段時間提醒
@@ -616,6 +637,7 @@
   - key: B
     text: 維持當前節奏
     consequences: []
+  cooldown: 2
 - id: strat_pit_stop_delay_response
   category: 策略事件
   name: Pit 停損延遲
@@ -640,3 +662,4 @@
   - key: B
     text: 節奏穩住等機會
     consequences: []
+  cooldown: 2

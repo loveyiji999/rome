@@ -31,6 +31,7 @@
     - target: race_info_module.position
       delta:
         add: -1
+  cooldown: 2
 - id: ai_draft_break
   category: AI 互動事件
   name: 尾流切斷
@@ -59,6 +60,7 @@
     - target: race_info_module.position
       delta:
         add: 1
+  cooldown: 2
 - id: ai_late_brake_challenge
   category: AI 互動事件
   name: 急剎逼近
@@ -92,6 +94,7 @@
     - target: durability_module.durability
       delta:
         add: -4
+  cooldown: 2
 - id: ai_slipstream_steal
   category: AI 互動事件
   name: 尾流搶奪
@@ -120,6 +123,7 @@
     - target: durability_module.durability
       delta:
         add: -3
+  cooldown: 2
 - id: ai_team_order_block
   category: AI 互動事件
   name: 隊友讓道干擾
@@ -150,6 +154,7 @@
     - target: handling_module.handling
       delta:
         multiply: 0.93
+  cooldown: 2
 - id: ai_fake_defensive_move
   category: AI 互動事件
   name: AI 假動作封線
@@ -180,6 +185,7 @@
     - target: handling_module.handling
       delta:
         multiply: 0.92
+  cooldown: 2
 - id: ai_brake_check
   category: AI 互動事件
   name: 急剎試探
@@ -207,6 +213,7 @@
     - target: race_info_module.position
       delta:
         add: -1
+  cooldown: 2
 - id: ai_side_by_side_drag
   category: AI 互動事件
   name: 平行拉鋸戰
@@ -233,6 +240,7 @@
     - target: durability_module.durability
       delta:
         add: -5
+  cooldown: 2
 - id: ai_block_pit_entry
   category: AI 互動事件
   name: 進站封阻
@@ -262,6 +270,7 @@
     - target: durability_module.durability
       delta:
         add: -4
+  cooldown: 2
 - id: ai_staggered_defense
   category: AI 互動事件
   name: 多重防守路線
@@ -288,6 +297,7 @@
     - target: race_info_module.position
       delta:
         add: -1
+  cooldown: 2
 - id: ai_inside_dive_bomb
   category: AI 互動事件
   name: AI 內線突襲
@@ -318,6 +328,7 @@
     - target: durability_module.durability
       delta:
         add: -6
+  cooldown: 2
 - id: ai_double_overtake_attempt
   category: AI 互動事件
   name: AI 雙車夾擊
@@ -348,6 +359,7 @@
     - target: durability_module.durability
       delta:
         add: -4
+  cooldown: 2
 - id: ai_drs_fight
   category: AI 互動事件
   name: DRS 爭奪區干擾
@@ -375,6 +387,7 @@
     - target: tire_module.tire_wear
       delta:
         add: 2
+  cooldown: 2
 - id: ai_blue_flag_standoff
   category: AI 互動事件
   name: 藍旗讓行僵局
@@ -403,6 +416,7 @@
     - target: tire_module.tire_wear
       delta:
         add: 4
+  cooldown: 2
 - id: ai_fake_outside_entry
   category: AI 互動事件
   name: AI 假外線入彎
@@ -429,6 +443,7 @@
     - target: durability_module.durability
       delta:
         add: -5
+  cooldown: 2
 - id: ai_lap_time_pressure
   category: AI 互動事件
   name: AI 拍你最佳圈速
@@ -453,6 +468,7 @@
     - target: tire_module.tire_wear
       delta:
         add: 5
+  cooldown: 2
 - id: ai_ghost_line_overlap
   category: AI 互動事件
   name: AI 疊線壓迫
@@ -479,6 +495,7 @@
     - target: durability_module.durability
       delta:
         add: -3
+  cooldown: 2
 - id: ai_overtake_and_cut
   category: AI 互動事件
   name: AI 超後卡位
@@ -508,6 +525,7 @@
     - target: durability_module.durability
       delta:
         add: -4
+  cooldown: 2
 - id: ai_fake_drs_defense
   category: AI 互動事件
   name: DRS 假動作阻斷
@@ -532,6 +550,7 @@
     - target: engine_module.engine_temp
       delta:
         add: 2
+  cooldown: 2
 - id: ai_repeated_pressure_attack
   category: AI 互動事件
   name: 連續攻擊試探
@@ -556,3 +575,4 @@
     - target: race_info_module.position
       delta:
         add: -1
+  cooldown: 2

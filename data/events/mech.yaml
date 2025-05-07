@@ -30,6 +30,7 @@
     - target: speed_module.speed
       delta:
         multiply: 0.9
+  cooldown: 2
 - id: mech_gearbox_jam
   category: 機械事件
   name: 變速箱卡檔
@@ -61,6 +62,7 @@
     - target: engine_temp
       delta:
         add: 8
+  cooldown: 2
 - id: mech_brake_fade
   category: 機械事件
   name: 煞車熱衰減
@@ -93,6 +95,7 @@
     - target: handling_module.handling
       delta:
         multiply: 0.9
+  cooldown: 2
 - id: mech_oil_pressure_drop
   category: 機械事件
   name: 機油壓力下降
@@ -124,6 +127,7 @@
     - target: engine_module.engine_temp
       delta:
         add: 5
+  cooldown: 2
 - id: mech_suspension_shift
   category: 機械事件
   name: 懸吊系統偏移
@@ -152,6 +156,7 @@
     - target: handling_module.handling
       delta:
         multiply: 0.9
+  cooldown: 2
 - id: mech_brake_fluid_boil
   category: 機械事件
   name: 煞車液煮沸
@@ -180,6 +185,7 @@
     - target: handling_module.handling
       delta:
         multiply: 0.92
+  cooldown: 2
 - id: mech_cooling_system_strain
   category: 機械事件
   name: 冷卻系統壓力上升
@@ -208,6 +214,7 @@
     - target: durability_module.durability
       delta:
         add: -4
+  cooldown: 2
 - id: mech_wheel_hub_noise
   category: 機械事件
   name: 輪軸異音
@@ -236,6 +243,7 @@
     - target: tire_module.tire_wear
       delta:
         add: 3
+  cooldown: 2
 - id: mech_exhaust_unstable
   category: 機械事件
   name: 排氣管支架鬆動
@@ -264,6 +272,7 @@
     - target: engine_module.engine_temp
       delta:
         add: 2
+  cooldown: 2
 - id: mech_transmission_clutch_slip
   category: 機械事件
   name: 離合器打滑
@@ -292,6 +301,7 @@
     - target: engine_module.engine_temp
       delta:
         add: 4
+  cooldown: 2
 - id: mech_sensor_glitch
   category: 機械事件
   name: 賽車感測器誤讀
@@ -316,6 +326,7 @@
     - target: race_info_module.position
       delta:
         add: -1
+  cooldown: 2
 - id: mech_engine_misfire
   category: 機械事件
   name: 引擎輕微爆震
@@ -347,6 +358,7 @@
     - target: speed_module.speed
       delta:
         multiply: 0.95
+  cooldown: 2
 - id: mech_chassis_bottom_out
   category: 機械事件
   name: 底盤觸地
@@ -378,6 +390,7 @@
     - target: brake_module.brake_efficiency
       delta:
         multiply: 0.93
+  cooldown: 2
 - id: mech_turbo_lag_spike
   category: 機械事件
   name: 渦輪遲滯加劇
@@ -406,6 +419,7 @@
     - target: durability_module.durability
       delta:
         add: -4
+  cooldown: 2
 - id: mech_brake_pad_wear_increase
   category: 機械事件
   name: 煞車片持續磨損
@@ -431,6 +445,7 @@
     - target: durability_module.durability
       delta:
         add: -3
+  cooldown: 2
 - id: mech_suspension_misalignment
   category: 機械事件
   name: 懸吊校正失調
@@ -456,6 +471,7 @@
     - target: durability_module.durability
       delta:
         add: -5
+  cooldown: 2
 - id: mech_ecu_soft_reset
   category: 機械事件
   name: ECU 自動重啟
@@ -481,6 +497,7 @@
     - target: handling_module.handling
       delta:
         multiply: 0.95
+  cooldown: 2
 - id: mech_airflow_sensor_fault
   category: 機械事件
   name: 進氣量感測異常
@@ -509,6 +526,7 @@
     - target: durability_module.durability
       delta:
         add: -4
+  cooldown: 2
 - id: mech_rear_diffuser_damage
   category: 機械事件
   name: 後擴散器損傷
@@ -537,6 +555,7 @@
     - target: durability_module.durability
       delta:
         add: -6
+  cooldown: 2
 - id: mech_drive_shaft_overheat
   category: 機械事件
   name: 傳動軸過熱
@@ -565,3 +584,4 @@
     - target: engine_module.engine_temp
       delta:
         add: 3
+  cooldown: 2
