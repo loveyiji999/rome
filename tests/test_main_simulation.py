@@ -1,8 +1,7 @@
-# 更新測試檔案，讓它在通過後自動印出 5 回合事件摘要
-from pathlib import Path
-test_code_verbose = """
 # tests/test_main_simulation.py
-
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import pytest
 from core.car_state import CarState
 from core.track_loader import load_track_segments
@@ -34,13 +33,8 @@ def test_five_turn_simulation():
     assert triggered
 
     # 額外：印出所有回合摘要
-    print("\\n--- 五回合模擬事件摘要 ---")
+    print("\n--- 五回合模擬事件摘要 ---")
     for entry in flow.log:
         print(f"第 {entry['turn']} 回合 - 切片：{entry['segment']} - 事件：{entry['event']}")
         print(f"  前：{entry['pre_state']}")
-        print(f"  後：{entry['post_state']}\\n")
-"""
-
-test_path = Path("data/test_main_simulation.py")
-test_path.write_text(test_code_verbose.strip(), encoding="utf-8")
-test_path
+        print(f"  後：{entry['post_state']}\n")

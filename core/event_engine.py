@@ -45,7 +45,7 @@ class Event:
         return [opt["key"] for opt in self.options]
 
 
-def load_events_from_folder(folder_path="events"):
+def load_events_from_folder(folder_path="data/events"):
     """讀取所有 YAML 事件檔案，回傳 Event 物件列表"""
     events = []
     for filename in os.listdir(folder_path):
