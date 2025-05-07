@@ -16,6 +16,7 @@ class TurnFlow:
         return self.segments[index]
 
     def simulate_turn(self):
+        from core.logic_rules import apply_logic_rules
         self.current_turn += 1
         segment = self.get_current_segment()
         pre_state = self.car_state.summary()
@@ -55,6 +56,8 @@ class TurnFlow:
         print(f"第 {self.current_turn} 回合 - 區段：{segment.track_type.value} - 可觸發事件：{candidates}")
         if triggered_event:
             print(f"→ 實際觸發事件：{triggered_event.name}")
+            
+        apply_logic_rules(self.car_state)
 
     def print_log(self):
         print("\n===== 回合事件紀錄 =====")
