@@ -2,8 +2,8 @@
 
 import yaml
 import os
-from car_state import CarState
-from condition_parser import evaluate_condition
+from core.car_state import CarState
+from core.condition_parser import evaluate_condition
 
 class Event:
     def __init__(self, data):

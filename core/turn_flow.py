@@ -1,7 +1,7 @@
 # turn_flow.py
 
 import random
-from event_engine import load_events_from_folder
+from core.event_engine import load_events_from_folder
 
 class TurnFlow:
     def __init__(self, car_state, segments, seed=None):
