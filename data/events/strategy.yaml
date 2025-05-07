@@ -135,6 +135,7 @@
       delta:
         add: -3
   cooldown: 2
+  mutex: pit
 - id: strat_fuel_mode_change
   category: 策略事件
   name: 切換燃料模式
@@ -169,6 +170,7 @@
       delta:
         add: 2
   cooldown: 2
+  mutex: strategy_slot
 - id: strat_tire_compound_adjust
   category: 策略事件
   name: 更換輪胎配方
@@ -201,6 +203,7 @@
       delta:
         multiply: 0.95
   cooldown: 2
+  mutex: tire
 - id: strat_yellow_flag_response
   category: 策略事件
   name: 黃旗區應對
@@ -255,6 +258,7 @@
     text: 觀察 AI 騷擾再啟
     consequences: []
   cooldown: 2
+  mutex: strategy_slot
 - id: strat_expected_rain_change
   category: 策略事件
   name: 天氣變化預警
@@ -369,6 +373,7 @@
     text: 延後使用壓尾段
     consequences: []
   cooldown: 2
+  mutex: strategy_slot
 - id: strat_penalty_notice
   category: 策略事件
   name: 裁判罰秒通知
@@ -429,6 +434,7 @@
       delta:
         add: -3
   cooldown: 2
+  mutex: tire
 - id: strat_gap_to_leader_notice
   category: 策略事件
   name: 與領先者時間差通知
@@ -532,6 +538,7 @@
       delta:
         add: -2
   cooldown: 2
+  mutex: strategy_slot
 - id: strat_final_lap_push
   category: 策略事件
   name: 最後一圈全力衝刺
@@ -663,3 +670,4 @@
     text: 節奏穩住等機會
     consequences: []
   cooldown: 2
+  mutex: pit

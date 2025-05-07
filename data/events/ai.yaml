@@ -32,6 +32,7 @@
       delta:
         add: -1
   cooldown: 2
+  mutex: ai_attack
 - id: ai_draft_break
   category: AI 互動事件
   name: 尾流切斷
@@ -271,6 +272,7 @@
       delta:
         add: -4
   cooldown: 2
+  mutex: pit
 - id: ai_staggered_defense
   category: AI 互動事件
   name: 多重防守路線
@@ -329,6 +331,7 @@
       delta:
         add: -6
   cooldown: 2
+  mutex: ai_attack
 - id: ai_double_overtake_attempt
   category: AI 互動事件
   name: AI 雙車夾擊
@@ -360,6 +363,7 @@
       delta:
         add: -4
   cooldown: 2
+  mutex: ai_attack
 - id: ai_drs_fight
   category: AI 互動事件
   name: DRS 爭奪區干擾

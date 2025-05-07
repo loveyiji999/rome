@@ -31,6 +31,7 @@
       delta:
         multiply: 0.9
   cooldown: 2
+  mutex: tire
 - id: mech_gearbox_jam
   category: 機械事件
   name: 變速箱卡檔
@@ -96,6 +97,7 @@
       delta:
         multiply: 0.9
   cooldown: 2
+  mutex: brake
 - id: mech_oil_pressure_drop
   category: 機械事件
   name: 機油壓力下降
@@ -186,6 +188,7 @@
       delta:
         multiply: 0.92
   cooldown: 2
+  mutex: brake
 - id: mech_cooling_system_strain
   category: 機械事件
   name: 冷卻系統壓力上升
@@ -215,6 +218,7 @@
       delta:
         add: -4
   cooldown: 2
+  mutex: engine
 - id: mech_wheel_hub_noise
   category: 機械事件
   name: 輪軸異音
@@ -359,6 +363,7 @@
       delta:
         multiply: 0.95
   cooldown: 2
+  mutex: engine
 - id: mech_chassis_bottom_out
   category: 機械事件
   name: 底盤觸地
@@ -446,6 +451,7 @@
       delta:
         add: -3
   cooldown: 2
+  mutex: brake
 - id: mech_suspension_misalignment
   category: 機械事件
   name: 懸吊校正失調

@@ -1,5 +1,7 @@
 import yaml
 from pathlib import Path
+from core.condition_parser import evaluate_condition
+
 class Event:
     def __init__(self, data):
         self.id = data["id"]
@@ -10,6 +12,7 @@ class Event:
         self.options = data["options"]
         self.cooldown = data.get("cooldown", 0)
         self.cooldown_remaining = 0
+        self.mutex = data.get("mutex")
 
     def is_triggered(self, segment, car_state, random_obj, context):
         if self.cooldown_remaining > 0:
@@ -44,8 +47,6 @@ def load_events_from_folder(folder_path="events"):
     for filename in Path(folder_path).glob("*.yaml"):
         with open(filename, "r", encoding="utf-8") as f:
             raw = yaml.safe_load(f)
-        for e in raw:
-            events.append(Event(e))
+            for e in raw:
+                events.append(Event(e))
     return events
-
-from core.condition_parser import evaluate_condition

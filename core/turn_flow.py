@@ -20,7 +20,6 @@ class TurnFlow:
         segment = self.get_current_segment()
         pre_state = self.car_state.summary()
 
-        # 模擬 context
         context = {
             "fuel": self.car_state.get("fuel_module.fuel"),
             "tire_wear": self.car_state.get("tire_module.tire_wear"),
@@ -32,15 +31,22 @@ class TurnFlow:
         triggered_event = None
         triggered_name = "None"
         candidates = []
+        triggered_mutex = set()
 
         for event in self.all_events:
+            # 排除已觸發 mutex 組別
+            if event.mutex and event.mutex in triggered_mutex:
+                continue
+
             if event.is_triggered(segment, self.car_state, self.random, context):
                 candidates.append(event.name)
                 if not triggered_event:
                     triggered_event = event
-                    event.apply_option("A", self.car_state)
                     triggered_name = event.name
-                    event.cooldown_remaining = event.cooldown  # 啟動冷卻
+                    event.apply_option("A", self.car_state)
+                    event.cooldown_remaining = event.cooldown
+                    if event.mutex:
+                        triggered_mutex.add(event.mutex)
 
         post_state = self.car_state.summary()
         self.log.append({
@@ -57,12 +63,10 @@ class TurnFlow:
         if triggered_event:
             print(f"→ 實際觸發事件：{triggered_event.name}")
 
-        # 自動遞減冷卻回合
         for event in self.all_events:
             if event.cooldown_remaining > 0:
                 event.cooldown_remaining -= 1
 
-        # 套用屬性邏輯連動
         apply_logic_rules(self.car_state)
 
     def print_log(self):
