@@ -16,26 +16,24 @@ class CarState:
             value = value[part]
         return value
 
-    def apply_change(self, key_path, method, value):
-        parts = key_path.split(".")
-        target = self.state
-        for part in parts[:-1]:
-            target = target[part]
-        final_key = parts[-1]
-        current = target[final_key]
+    def apply_change(self, target, method, value):
+        keys = target.split(".")
+        d = self.state
+        for key in keys[:-1]:
+            d = d.setdefault(key, {})
+        final_key = keys[-1]
 
-        # 變更屬性
-        if method == "add":
-            target[final_key] += value
+        if method == "set":
+            d[final_key] = value
+        elif method == "add":
+            d[final_key] = d.get(final_key, 0) + value
         elif method == "multiply":
-            target[final_key] *= value
-        elif method == "set":
-            target[final_key] = value
+            d[final_key] = d.get(final_key, 1) * value
         else:
-            raise ValueError(f"未知變動方式：{method}")
+            raise ValueError(f"Unknown method: {method}")
 
         # 自動 clamp
-        self._clamp_value(parts, target, final_key)
+        self._clamp_value(keys, d, final_key)
 
     def _clamp_value(self, key_parts, target_dict, key):
         module = key_parts[0]
