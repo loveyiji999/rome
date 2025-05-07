@@ -92,3 +92,467 @@
     - target: durability_module.durability
       delta:
         add: -4
+- id: ai_slipstream_steal
+  category: AI 互動事件
+  name: 尾流搶奪
+  description:
+  - 你剛進入尾流區域，AI 車手突然壓進來，切走你原本的位置與加速機會。
+  trigger:
+    segment_type:
+    - Long Straight
+    - Straight
+    conditions:
+    - name: InSlipstream
+    probability: 0.9
+  options:
+  - key: A
+    text: 改變路線重新貼上
+    consequences:
+    - target: speed_module.speed
+      delta:
+        multiply: 0.97
+  - key: B
+    text: 冒險從外側再壓過去
+    consequences:
+    - target: handling_module.handling
+      delta:
+        multiply: 0.95
+    - target: durability_module.durability
+      delta:
+        add: -3
+- id: ai_team_order_block
+  category: AI 互動事件
+  name: 隊友讓道干擾
+  description:
+  - AI 隊友互相配合，其中一車故意放慢並阻擋你路線，幫助另一車超過你。
+  trigger:
+    segment_type:
+    - Medium Corner
+    - Hairpin Return
+    conditions:
+    - name: DistanceLessThan
+      params:
+        threshold: 2.0
+    probability: 0.8
+  options:
+  - key: A
+    text: 減速等待空檔
+    consequences:
+    - target: position
+      delta:
+        add: -1
+  - key: B
+    text: 強行突破縫隙
+    consequences:
+    - target: durability_module.durability
+      delta:
+        add: -4
+    - target: handling_module.handling
+      delta:
+        multiply: 0.93
+- id: ai_fake_defensive_move
+  category: AI 互動事件
+  name: AI 假動作封線
+  description:
+  - AI 車手在你準備超車前突然橫移封路，再立刻回到原路線，干擾你的判斷。
+  trigger:
+    segment_type:
+    - Straight
+    - Chicane
+    conditions:
+    - name: DistanceLessThan
+      params:
+        threshold: 2.5
+    probability: 0.7
+  options:
+  - key: A
+    text: 收油等待下一機會
+    consequences:
+    - target: speed_module.speed
+      delta:
+        multiply: 0.9
+  - key: B
+    text: 同時變線硬超
+    consequences:
+    - target: durability_module.durability
+      delta:
+        add: -6
+    - target: handling_module.handling
+      delta:
+        multiply: 0.92
+- id: ai_brake_check
+  category: AI 互動事件
+  name: 急剎試探
+  description:
+  - AI 車手突然在非煞車區快速減速，試圖讓你誤判或追撞。
+  trigger:
+    segment_type:
+    - Straight
+    - Chicane
+    conditions:
+    - name: DistanceLessThan
+      params:
+        threshold: 2.0
+    probability: 0.65
+  options:
+  - key: A
+    text: 急剎反應
+    consequences:
+    - target: brake_module.brake_efficiency
+      delta:
+        multiply: 0.97
+  - key: B
+    text: 閃邊避免接觸
+    consequences:
+    - target: position
+      delta:
+        add: -1
+- id: ai_side_by_side_drag
+  category: AI 互動事件
+  name: 平行拉鋸戰
+  description:
+  - AI 車與你平行長時間爭奪同一路線，迫使你延後超車。
+  trigger:
+    segment_type:
+    - Long Straight
+    conditions:
+    - name: DistanceLessThan
+      params:
+        threshold: 1.5
+    probability: 0.85
+  options:
+  - key: A
+    text: 延後超車等時機
+    consequences:
+    - target: speed_module.speed
+      delta:
+        multiply: 0.97
+  - key: B
+    text: 強壓內線進彎
+    consequences:
+    - target: durability_module.durability
+      delta:
+        add: -5
+- id: ai_block_pit_entry
+  category: AI 互動事件
+  name: 進站封阻
+  description:
+  - 你準備進入 Pit，AI 從旁路線突然擠入封住入口，只能延後一圈。
+  trigger:
+    segment_type:
+    - Pit Entry
+    conditions:
+    - name: DistanceLessThan
+      params:
+        threshold: 1.5
+    probability: 0.75
+  options:
+  - key: A
+    text: 暫停進站計畫
+    consequences:
+    - target: fuel_module.fuel
+      delta:
+        add: -2
+    - target: tire_module.tire_wear
+      delta:
+        add: 3
+  - key: B
+    text: 硬擠並排衝進站口
+    consequences:
+    - target: durability_module.durability
+      delta:
+        add: -4
+- id: ai_staggered_defense
+  category: AI 互動事件
+  name: 多重防守路線
+  description:
+  - AI 持續微調防守位置，使你無法清楚判斷突破路徑。
+  trigger:
+    segment_type:
+    - Medium Corner
+    conditions:
+    - name: DistanceLessThan
+      params:
+        threshold: 2.0
+    probability: 0.6
+  options:
+  - key: A
+    text: 嘗試外線繞行
+    consequences:
+    - target: tire_module.tire_wear
+      delta:
+        add: 4
+  - key: B
+    text: 減速等待下一彎
+    consequences:
+    - target: position
+      delta:
+        add: -1
+- id: ai_inside_dive_bomb
+  category: AI 互動事件
+  name: AI 內線突襲
+  description:
+  - AI 在你煞車準備時突然從內線切入超車，打亂你的入彎節奏。
+  trigger:
+    segment_type:
+    - Hairpin Return
+    - Slow Corner
+    conditions:
+    - name: DistanceLessThan
+      params:
+        threshold: 2.5
+    probability: 0.7
+  options:
+  - key: A
+    text: 提早剎車保命
+    consequences:
+    - target: brake_module.brake_efficiency
+      delta:
+        multiply: 0.95
+    - target: handling_module.handling
+      delta:
+        multiply: 0.95
+  - key: B
+    text: 硬扛轉向
+    consequences:
+    - target: durability_module.durability
+      delta:
+        add: -6
+- id: ai_double_overtake_attempt
+  category: AI 互動事件
+  name: AI 雙車夾擊
+  description:
+  - 兩輛 AI 同時左右包夾你，你必須臨機應變選擇閃避方向。
+  trigger:
+    segment_type:
+    - Straight
+    - Chicane
+    conditions:
+    - name: DistanceLessThan
+      params:
+        threshold: 1.5
+    probability: 0.65
+  options:
+  - key: A
+    text: 守內線讓外側 AI 過
+    consequences:
+    - target: position
+      delta:
+        add: -1
+  - key: B
+    text: 全力往外線壓迫
+    consequences:
+    - target: tire_module.tire_wear
+      delta:
+        add: 5
+    - target: durability_module.durability
+      delta:
+        add: -4
+- id: ai_drs_fight
+  category: AI 互動事件
+  name: DRS 爭奪區干擾
+  description:
+  - AI 車手故意在偵測區前搶先減速，讓你失去使用 DRS 的機會。
+  trigger:
+    segment_type:
+    - Long Straight
+    conditions:
+    - name: InSlipstream
+    probability: 0.75
+  options:
+  - key: A
+    text: 被動收油應對
+    consequences:
+    - target: speed_module.speed
+      delta:
+        multiply: 0.95
+  - key: B
+    text: 強切外線再貼上
+    consequences:
+    - target: handling_module.handling
+      delta:
+        multiply: 0.94
+    - target: tire_module.tire_wear
+      delta:
+        add: 2
+- id: ai_blue_flag_standoff
+  category: AI 互動事件
+  name: 藍旗讓行僵局
+  description:
+  - 慢車 AI 收到藍旗提示但延遲讓行，導致你浪費數秒找機會超車。
+  trigger:
+    segment_type:
+    - Straight
+    - Medium Corner
+    conditions:
+    - name: Always
+    probability: 0.65
+  options:
+  - key: A
+    text: 觀察等待空檔
+    consequences:
+    - target: position
+      delta:
+        add: -1
+  - key: B
+    text: 直接外線強行超
+    consequences:
+    - target: handling_module.handling
+      delta:
+        multiply: 0.95
+    - target: tire_module.tire_wear
+      delta:
+        add: 4
+- id: ai_fake_outside_entry
+  category: AI 互動事件
+  name: AI 假外線入彎
+  description:
+  - AI 假裝從外線入彎，誘導你內線攻擊，卻在煞車點切入搶內線。
+  trigger:
+    segment_type:
+    - Hairpin Return
+    conditions:
+    - name: DistanceLessThan
+      params:
+        threshold: 2.0
+    probability: 0.7
+  options:
+  - key: A
+    text: 改變入彎角度
+    consequences:
+    - target: handling_module.handling
+      delta:
+        multiply: 0.97
+  - key: B
+    text: 內線守到底
+    consequences:
+    - target: durability_module.durability
+      delta:
+        add: -5
+- id: ai_lap_time_pressure
+  category: AI 互動事件
+  name: AI 拍你最佳圈速
+  description:
+  - AI 車手上圈創下全場最佳時間，施加節奏與心理壓力。
+  trigger:
+    segment_type:
+    - Any
+    conditions:
+    - name: Always
+    probability: 0.6
+  options:
+  - key: A
+    text: 維持節奏
+    consequences: []
+  - key: B
+    text: 強行壓圈回應
+    consequences:
+    - target: engine_module.engine_temp
+      delta:
+        add: 3
+    - target: tire_module.tire_wear
+      delta:
+        add: 5
+- id: ai_ghost_line_overlap
+  category: AI 互動事件
+  name: AI 疊線壓迫
+  description:
+  - AI 車手刻意壓在你的行駛線上，造成你視覺與策略錯亂。
+  trigger:
+    segment_type:
+    - Medium Corner
+    conditions:
+    - name: DistanceLessThan
+      params:
+        threshold: 1.5
+    probability: 0.7
+  options:
+  - key: A
+    text: 拉車身閃避
+    consequences:
+    - target: speed_module.speed
+      delta:
+        multiply: 0.95
+  - key: B
+    text: 照線持行不讓步
+    consequences:
+    - target: durability_module.durability
+      delta:
+        add: -3
+- id: ai_overtake_and_cut
+  category: AI 互動事件
+  name: AI 超後卡位
+  description:
+  - AI 成功超車後立刻強切前方，導致你需急剎並退一步。
+  trigger:
+    segment_type:
+    - Long Straight
+    conditions:
+    - name: DistanceLessThan
+      params:
+        threshold: 2.0
+    probability: 0.75
+  options:
+  - key: A
+    text: 急剎退位
+    consequences:
+    - target: brake_module.brake_efficiency
+      delta:
+        multiply: 0.95
+  - key: B
+    text: 不讓強壓回去
+    consequences:
+    - target: handling_module.handling
+      delta:
+        multiply: 0.92
+    - target: durability_module.durability
+      delta:
+        add: -4
+- id: ai_fake_drs_defense
+  category: AI 互動事件
+  name: DRS 假動作阻斷
+  description:
+  - AI 車手故意在 DRS 偵測點做出減速假象，誘你錯過開啟時機。
+  trigger:
+    segment_type:
+    - Long Straight
+    conditions:
+    - name: InSlipstream
+    probability: 0.68
+  options:
+  - key: A
+    text: 保持安全距離
+    consequences: []
+  - key: B
+    text: 提前加速開差
+    consequences:
+    - target: fuel_module.fuel
+      delta:
+        add: -2
+    - target: engine_module.engine_temp
+      delta:
+        add: 2
+- id: ai_repeated_pressure_attack
+  category: AI 互動事件
+  name: 連續攻擊試探
+  description:
+  - AI 車手連續 3 圈在同一彎角壓迫，意圖逼你出錯或讓道。
+  trigger:
+    segment_type:
+    - Hairpin Return
+    - Slow Corner
+    conditions:
+    - name: DistanceLessThan
+      params:
+        threshold: 2.0
+    probability: 0.7
+  options:
+  - key: A
+    text: 照計畫轉向
+    consequences: []
+  - key: B
+    text: 讓道暫避
+    consequences:
+    - target: position
+      delta:
+        add: -1

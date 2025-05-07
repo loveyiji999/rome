@@ -98,3 +98,545 @@
     - target: speed_module.speed
       delta:
         multiply: 1.05
+- id: strat_early_pit_window
+  category: 策略事件
+  name: 提前進站窗口
+  description:
+  - 根據目前胎溫與磨損數據，車隊建議提前進站換胎。
+  trigger:
+    segment_type:
+    - Straight
+    - Uphill
+    conditions:
+    - name: TireWearAbove
+      params:
+        threshold: 65
+    probability: 0.8
+  options:
+  - key: A
+    text: 立即進站
+    consequences:
+    - target: tire_module.tire_wear
+      delta:
+        set: 0
+    - target: position
+      delta:
+        add: -1
+  - key: B
+    text: 再撐兩圈觀察
+    consequences:
+    - target: tire_module.tire_wear
+      delta:
+        add: 10
+    - target: durability_module.durability
+      delta:
+        add: -3
+- id: strat_fuel_mode_change
+  category: 策略事件
+  name: 切換燃料模式
+  description:
+  - 剩餘油量與預估圈數偏緊，車隊建議改用節能模式。
+  trigger:
+    segment_type:
+    - Straight
+    - Long Straight
+    conditions:
+    - name: FuelBelow
+      params:
+        threshold: 18
+    probability: 0.75
+  options:
+  - key: A
+    text: 改節能模式
+    consequences:
+    - target: fuel_module.consumption_rate
+      delta:
+        multiply: 0.8
+    - target: speed_module.speed
+      delta:
+        multiply: 0.95
+  - key: B
+    text: 維持性能推進
+    consequences:
+    - target: fuel_module.fuel
+      delta:
+        add: -3
+    - target: engine_module.engine_temp
+      delta:
+        add: 2
+- id: strat_tire_compound_adjust
+  category: 策略事件
+  name: 更換輪胎配方
+  description:
+  - 根據預測氣溫與賽道磨耗，建議改換中性胎或硬胎以應對後半程。
+  trigger:
+    segment_type:
+    - Slow Corner
+    - Chicane
+    conditions:
+    - name: Always
+    probability: 0.85
+  options:
+  - key: A
+    text: 換中性胎平衡表現
+    consequences:
+    - target: tire_module.tire_wear
+      delta:
+        set: 0
+    - target: handling_module.handling
+      delta:
+        multiply: 1.05
+  - key: B
+    text: 硬胎長壽命壓後段
+    consequences:
+    - target: tire_module.tire_wear
+      delta:
+        set: 0
+    - target: grip_coefficient
+      delta:
+        multiply: 0.95
+- id: strat_yellow_flag_response
+  category: 策略事件
+  name: 黃旗區應對
+  description:
+  - 當前區段進入黃旗區，禁止超車並需降速。
+  trigger:
+    segment_type:
+    - Medium Corner
+    - Hairpin Return
+    conditions:
+    - name: Always
+    probability: 1.0
+  options:
+  - key: A
+    text: 保守通過等待綠旗
+    consequences:
+    - target: speed_module.speed
+      delta:
+        multiply: 0.85
+  - key: B
+    text: 不減速強行搶位
+    consequences:
+    - target: durability_module.durability
+      delta:
+        add: -7
+    - target: position
+      delta:
+        add: -1
+- id: strat_drs_available
+  category: 策略事件
+  name: DRS 區開啟
+  description:
+  - 本區段為 DRS 可用直線，可選擇是否主動開啟系統增壓。
+  trigger:
+    segment_type:
+    - Long Straight
+    conditions:
+    - name: InSlipstream
+    probability: 0.9
+  options:
+  - key: A
+    text: 開啟 DRS 爭位
+    consequences:
+    - target: speed_module.speed
+      delta:
+        multiply: 1.07
+    - target: fuel_module.fuel
+      delta:
+        add: -1
+  - key: B
+    text: 觀察 AI 騷擾再啟
+    consequences: []
+- id: strat_expected_rain_change
+  category: 策略事件
+  name: 天氣變化預警
+  description:
+  - 根據預報，5 分鐘內可能降雨，是否提前改成雨胎？
+  trigger:
+    segment_type:
+    - Straight
+    - Chicane
+    conditions:
+    - name: Always
+    probability: 0.7
+  options:
+  - key: A
+    text: 改雨胎安全先行
+    consequences:
+    - target: tire_module.tire_wear
+      delta:
+        set: 0
+    - target: grip_coefficient
+      delta:
+        multiply: 1.05
+  - key: B
+    text: 維持乾胎冒險壓雨段
+    consequences:
+    - target: durability_module.durability
+      delta:
+        add: -5
+- id: strat_team_gap_analysis
+  category: 策略事件
+  name: 隊友距離分析
+  description:
+  - 隊友與你時間差達 5 秒，可選擇彼此換位或延後出站爭空窗。
+  trigger:
+    segment_type:
+    - Pit Entry
+    conditions:
+    - name: Always
+    probability: 0.65
+  options:
+  - key: A
+    text: 延後進站，爭空窗
+    consequences:
+    - target: fuel_module.fuel
+      delta:
+        add: -3
+    - target: position
+      delta:
+        add: -1
+  - key: B
+    text: 立刻進站切胎
+    consequences:
+    - target: tire_module.tire_wear
+      delta:
+        set: 0
+    - target: durability_module.durability
+      delta:
+        add: 5
+- id: strat_virtual_safety_car
+  category: 策略事件
+  name: 虛擬安全車應對
+  description:
+  - VSC 啟動，所有車輛需立即限速並凍結間距。
+  trigger:
+    segment_type:
+    - Any
+    conditions:
+    - name: Always
+    probability: 1.0
+  options:
+  - key: A
+    text: 嚴格執行限速
+    consequences:
+    - target: speed_module.speed
+      delta:
+        set: 80
+  - key: B
+    text: 偷偷微加速靠近對手
+    consequences:
+    - target: position
+      delta:
+        add: -1
+    - target: durability_module.durability
+      delta:
+        add: -4
+- id: strat_push_to_pass_window
+  category: 策略事件
+  name: 推進模式開啟
+  description:
+  - 車隊開啟 30 秒推進模式，可臨時提升引擎輸出。
+  trigger:
+    segment_type:
+    - Straight
+    - Uphill
+    conditions:
+    - name: Always
+    probability: 0.6
+  options:
+  - key: A
+    text: 立即使用提升過彎
+    consequences:
+    - target: speed_module.speed
+      delta:
+        multiply: 1.1
+    - target: fuel_module.fuel
+      delta:
+        add: -2
+  - key: B
+    text: 延後使用壓尾段
+    consequences: []
+- id: strat_penalty_notice
+  category: 策略事件
+  name: 裁判罰秒通知
+  description:
+  - 你因進站超速或黃旗違規被罰加 5 秒，是否立即進站執行？
+  trigger:
+    segment_type:
+    - Pit Entry
+    conditions:
+    - name: Always
+    probability: 0.5
+  options:
+  - key: A
+    text: 立即進站罰秒＋換胎
+    consequences:
+    - target: tire_module.tire_wear
+      delta:
+        set: 0
+    - target: position
+      delta:
+        add: -2
+  - key: B
+    text: 延後執行等時機
+    consequences:
+    - target: durability_module.durability
+      delta:
+        add: -3
+- id: strat_tire_temp_monitoring
+  category: 策略事件
+  name: 輪胎溫度監測異常
+  description:
+  - 右後輪胎溫明顯高於其他輪，可能因對路線偏壓造成。
+  trigger:
+    segment_type:
+    - Medium Corner
+    - Uphill
+    conditions:
+    - name: Always
+    probability: 0.7
+  options:
+  - key: A
+    text: 改走外線分擔磨損
+    consequences:
+    - target: tire_module.surface_temp
+      delta:
+        add: -2
+    - target: tire_module.tire_wear
+      delta:
+        add: 2
+  - key: B
+    text: 繼續壓線搏速度
+    consequences:
+    - target: tire_module.tire_wear
+      delta:
+        add: 6
+    - target: durability_module.durability
+      delta:
+        add: -3
+- id: strat_gap_to_leader_notice
+  category: 策略事件
+  name: 與領先者時間差通知
+  description:
+  - 目前與領先者差距在 3 秒以內，車隊建議進行戰略性逼近。
+  trigger:
+    segment_type:
+    - Long Straight
+    conditions:
+    - name: Always
+    probability: 0.6
+  options:
+  - key: A
+    text: 積極模式衝擊前方
+    consequences:
+    - target: fuel_module.fuel
+      delta:
+        add: -3
+    - target: speed_module.speed
+      delta:
+        multiply: 1.05
+  - key: B
+    text: 穩定節奏待錯誤
+    consequences: []
+- id: strat_defensive_positioning
+  category: 策略事件
+  name: 防守內線提醒
+  description:
+  - AI 正逼近，車隊提醒你守住內線避免被突襲。
+  trigger:
+    segment_type:
+    - Slow Corner
+    conditions:
+    - name: DistanceLessThan
+      params:
+        threshold: 2.0
+    probability: 0.65
+  options:
+  - key: A
+    text: 照指示封死內線
+    consequences:
+    - target: handling_module.handling
+      delta:
+        multiply: 0.95
+  - key: B
+    text: 冒險轉向搶更佳角度
+    consequences:
+    - target: durability_module.durability
+      delta:
+        add: -3
+    - target: position
+      delta:
+        add: 1
+- id: strat_risk_level_update
+  category: 策略事件
+  name: 風險等級更新
+  description:
+  - 依據你前半段的超車頻率，車隊預估你進入高風險區段，建議稍微保守。
+  trigger:
+    segment_type:
+    - Chicane
+    - Hairpin Return
+    conditions:
+    - name: Always
+    probability: 0.6
+  options:
+  - key: A
+    text: 降低進攻頻率
+    consequences: []
+  - key: B
+    text: 無視風險繼續壓制
+    consequences:
+    - target: durability_module.durability
+      delta:
+        add: -4
+- id: strat_battery_save_mode
+  category: 策略事件
+  name: 電池節能模式啟用
+  description:
+  - 能量回收效率偏低，車隊建議切換到節能 ERS 模式。
+  trigger:
+    segment_type:
+    - Straight
+    conditions:
+    - name: Always
+    probability: 0.7
+  options:
+  - key: A
+    text: 切換節能 ERS 模式
+    consequences:
+    - target: speed_module.speed
+      delta:
+        multiply: 0.95
+  - key: B
+    text: 保留全功率繼續推進
+    consequences:
+    - target: durability_module.durability
+      delta:
+        add: -2
+- id: strat_final_lap_push
+  category: 策略事件
+  name: 最後一圈全力衝刺
+  description:
+  - 進入最後一圈，車隊請你全開引擎與 ERS 推至極限。
+  trigger:
+    segment_type:
+    - Any
+    conditions:
+    - name: LapsCompletedOver
+      params:
+        count: 9
+    probability: 0.95
+  options:
+  - key: A
+    text: 全力壓制拼位置
+    consequences:
+    - target: speed_module.speed
+      delta:
+        multiply: 1.1
+    - target: engine_module.engine_temp
+      delta:
+        add: 5
+  - key: B
+    text: 穩穩完賽
+    consequences: []
+- id: strat_team_overtake_permission
+  category: 策略事件
+  name: 隊友請求換位
+  description:
+  - 隊友已接近並有更快節奏，是否讓位協助車隊策略？
+  trigger:
+    segment_type:
+    - Straight
+    - Medium Corner
+    conditions:
+    - name: DistanceLessThan
+      params:
+        threshold: 1.5
+    probability: 0.65
+  options:
+  - key: A
+    text: 讓位配合團隊
+    consequences:
+    - target: position
+      delta:
+        add: -1
+  - key: B
+    text: 拒絕換位
+    consequences:
+    - target: durability_module.durability
+      delta:
+        add: -2
+- id: strat_brake_temp_management
+  category: 策略事件
+  name: 煞車溫度管理
+  description:
+  - 右前煞車溫度高於標準值，需調整煞車平衡或駕駛風格。
+  trigger:
+    segment_type:
+    - Downhill
+    - Hairpin Return
+    conditions:
+    - name: Always
+    probability: 0.7
+  options:
+  - key: A
+    text: 減少剎車壓力
+    consequences:
+    - target: brake_module.brake_efficiency
+      delta:
+        multiply: 0.93
+  - key: B
+    text: 無視數據維持速度
+    consequences:
+    - target: durability_module.durability
+      delta:
+        add: -4
+- id: strat_sector_time_alert
+  category: 策略事件
+  name: 區段時間提醒
+  description:
+  - 本圈 Sector 2 慢於預期，是否要提升 ERS 或油門反應？
+  trigger:
+    segment_type:
+    - Chicane
+    conditions:
+    - name: Always
+    probability: 0.8
+  options:
+  - key: A
+    text: 提升輸出追時間
+    consequences:
+    - target: speed_module.speed
+      delta:
+        multiply: 1.05
+    - target: fuel_module.fuel
+      delta:
+        add: -2
+  - key: B
+    text: 維持當前節奏
+    consequences: []
+- id: strat_pit_stop_delay_response
+  category: 策略事件
+  name: Pit 停損延遲
+  description:
+  - Pit 作業時間較預期慢 1.5 秒，是否改策略推進？
+  trigger:
+    segment_type:
+    - Pit Entry
+    conditions:
+    - name: Always
+    probability: 0.5
+  options:
+  - key: A
+    text: 全力追回損失時間
+    consequences:
+    - target: engine_module.engine_temp
+      delta:
+        add: 4
+    - target: speed_module.speed
+      delta:
+        multiply: 1.07
+  - key: B
+    text: 節奏穩住等機會
+    consequences: []

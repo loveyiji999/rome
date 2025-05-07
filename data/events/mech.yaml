@@ -93,3 +93,475 @@
     - target: handling_module.handling
       delta:
         multiply: 0.9
+- id: mech_oil_pressure_drop
+  category: 機械事件
+  name: 機油壓力下降
+  description:
+  - 機油壓力突然下降，可能導致潤滑不足並影響引擎冷卻。
+  trigger:
+    segment_type:
+    - Uphill
+    - Straight
+    conditions:
+    - name: Always
+    probability: 0.09
+  options:
+  - key: A
+    text: 降低轉速並保守駕駛
+    consequences:
+    - target: engine_module.engine_temp
+      delta:
+        add: 2
+    - target: speed_module.speed
+      delta:
+        multiply: 0.92
+  - key: B
+    text: 忽略警示繼續推進
+    consequences:
+    - target: durability_module.durability
+      delta:
+        add: -8
+    - target: engine_module.engine_temp
+      delta:
+        add: 5
+- id: mech_suspension_shift
+  category: 機械事件
+  name: 懸吊系統偏移
+  description:
+  - 過彎重壓後懸吊設定略微偏移，影響操控回饋與穩定性。
+  trigger:
+    segment_type:
+    - Hairpin Return
+    - Medium Corner
+    conditions:
+    - name: Always
+    probability: 0.08
+  options:
+  - key: A
+    text: 調整操控風格彌補偏移
+    consequences:
+    - target: handling_module.handling
+      delta:
+        multiply: 0.95
+  - key: B
+    text: 不管繼續衝刺
+    consequences:
+    - target: durability_module.durability
+      delta:
+        add: -6
+    - target: handling_module.handling
+      delta:
+        multiply: 0.9
+- id: mech_brake_fluid_boil
+  category: 機械事件
+  name: 煞車液煮沸
+  description:
+  - 連續剎車造成煞車液煮沸，剎車回饋變軟、距離延長。
+  trigger:
+    segment_type:
+    - Downhill
+    - Slow Corner
+    conditions:
+    - name: Always
+    probability: 0.1
+  options:
+  - key: A
+    text: 提前剎車調整距離
+    consequences:
+    - target: brake_module.brake_efficiency
+      delta:
+        multiply: 0.9
+  - key: B
+    text: 硬踩到底冒風險
+    consequences:
+    - target: durability_module.durability
+      delta:
+        add: -5
+    - target: handling_module.handling
+      delta:
+        multiply: 0.92
+- id: mech_cooling_system_strain
+  category: 機械事件
+  name: 冷卻系統壓力上升
+  description:
+  - 氣溫與引擎負載導致冷卻系統效率下降，溫度開始偏高。
+  trigger:
+    segment_type:
+    - Uphill
+    - Chicane
+    conditions:
+    - name: Always
+    probability: 0.11
+  options:
+  - key: A
+    text: 稍降轉速節能降溫
+    consequences:
+    - target: engine_module.engine_temp
+      delta:
+        add: 2
+  - key: B
+    text: 無視繼續高轉運轉
+    consequences:
+    - target: engine_module.engine_temp
+      delta:
+        add: 6
+    - target: durability_module.durability
+      delta:
+        add: -4
+- id: mech_wheel_hub_noise
+  category: 機械事件
+  name: 輪軸異音
+  description:
+  - 車輪傳出不正常摩擦聲響，可能為軸承磨損或卡石異物。
+  trigger:
+    segment_type:
+    - Hairpin Return
+    - Straight
+    conditions:
+    - name: Always
+    probability: 0.07
+  options:
+  - key: A
+    text: 放慢速度觀察
+    consequences:
+    - target: speed_module.speed
+      delta:
+        multiply: 0.93
+  - key: B
+    text: 維持節奏強行推進
+    consequences:
+    - target: durability_module.durability
+      delta:
+        add: -7
+    - target: tire_module.tire_wear
+      delta:
+        add: 3
+- id: mech_exhaust_unstable
+  category: 機械事件
+  name: 排氣管支架鬆動
+  description:
+  - 底盤震動造成排氣管支架鬆動，尾段發出金屬敲擊聲。
+  trigger:
+    segment_type:
+    - Chicane
+    - Uphill
+    conditions:
+    - name: Always
+    probability: 0.06
+  options:
+  - key: A
+    text: 減速讓震動減輕
+    consequences:
+    - target: speed_module.speed
+      delta:
+        multiply: 0.9
+  - key: B
+    text: 維持速度不處理
+    consequences:
+    - target: durability_module.durability
+      delta:
+        add: -4
+    - target: engine_module.engine_temp
+      delta:
+        add: 2
+- id: mech_transmission_clutch_slip
+  category: 機械事件
+  name: 離合器打滑
+  description:
+  - 傳動系統部分打滑，轉速上升但動力無法完全傳遞至後輪。
+  trigger:
+    segment_type:
+    - Straight
+    - Uphill
+    conditions:
+    - name: Always
+    probability: 0.1
+  options:
+  - key: A
+    text: 溫柔踩油門減緩衝擊
+    consequences:
+    - target: acceleration_module.acceleration
+      delta:
+        multiply: 0.95
+  - key: B
+    text: 強踩油門爭時間
+    consequences:
+    - target: durability_module.durability
+      delta:
+        add: -6
+    - target: engine_module.engine_temp
+      delta:
+        add: 4
+- id: mech_sensor_glitch
+  category: 機械事件
+  name: 賽車感測器誤讀
+  description:
+  - 轉向感測器回報異常數值，車隊無法提供精準指示。
+  trigger:
+    segment_type:
+    - Any
+    conditions:
+    - name: Always
+    probability: 0.05
+  options:
+  - key: A
+    text: 自行判斷賽道節奏
+    consequences:
+    - target: handling_module.handling
+      delta:
+        multiply: 0.96
+  - key: B
+    text: 延後反應觀察數據
+    consequences:
+    - target: position
+      delta:
+        add: -1
+- id: mech_engine_misfire
+  category: 機械事件
+  name: 引擎輕微爆震
+  description:
+  - 燃燒時機誤差導致局部失火，出力不穩與震動加劇。
+  trigger:
+    segment_type:
+    - Long Straight
+    - Uphill
+    conditions:
+    - name: Always
+    probability: 0.08
+  options:
+  - key: A
+    text: 切換保守模式
+    consequences:
+    - target: engine_module.engine_temp
+      delta:
+        add: 3
+    - target: acceleration_module.acceleration
+      delta:
+        multiply: 0.9
+  - key: B
+    text: 強行持續衝刺
+    consequences:
+    - target: durability_module.durability
+      delta:
+        add: -5
+    - target: speed_module.speed
+      delta:
+        multiply: 0.95
+- id: mech_chassis_bottom_out
+  category: 機械事件
+  name: 底盤觸地
+  description:
+  - 高速下壓過強導致車體與路面接觸，底盤摩擦產生火花與結構應力。
+  trigger:
+    segment_type:
+    - Downhill
+    - Straight
+    conditions:
+    - name: Always
+    probability: 0.06
+  options:
+  - key: A
+    text: 升高車高保守駕駛
+    consequences:
+    - target: aero_module.downforce
+      delta:
+        multiply: 0.95
+    - target: handling_module.handling
+      delta:
+        multiply: 0.97
+  - key: B
+    text: 維持低姿態壓迫力
+    consequences:
+    - target: durability_module.durability
+      delta:
+        add: -7
+    - target: brake_module.brake_efficiency
+      delta:
+        multiply: 0.93
+- id: mech_turbo_lag_spike
+  category: 機械事件
+  name: 渦輪遲滯加劇
+  description:
+  - 短時間內引擎負載不穩導致渦輪遲滯現象惡化，動力輸出延遲。
+  trigger:
+    segment_type:
+    - Straight
+    - Uphill
+    conditions:
+    - name: Always
+    probability: 0.07
+  options:
+  - key: A
+    text: 切換至平穩模式
+    consequences:
+    - target: acceleration_module.acceleration
+      delta:
+        multiply: 0.92
+  - key: B
+    text: 強行高轉彌補延遲
+    consequences:
+    - target: engine_module.engine_temp
+      delta:
+        add: 5
+    - target: durability_module.durability
+      delta:
+        add: -4
+- id: mech_brake_pad_wear_increase
+  category: 機械事件
+  name: 煞車片持續磨損
+  description:
+  - 煞車系統溫度未降，導致煞車片磨損速度持續上升。
+  trigger:
+    segment_type:
+    - Chicane
+    - Downhill
+    conditions:
+    - name: Always
+    probability: 0.06
+  options:
+  - key: A
+    text: 降低剎車強度
+    consequences:
+    - target: brake_module.brake_efficiency
+      delta:
+        multiply: 0.95
+  - key: B
+    text: 照常剎車拼 lap
+    consequences:
+    - target: durability_module.durability
+      delta:
+        add: -3
+- id: mech_suspension_misalignment
+  category: 機械事件
+  name: 懸吊校正失調
+  description:
+  - 路面衝擊導致懸吊幾何角度微幅失衡，彎中反應異常。
+  trigger:
+    segment_type:
+    - Hairpin Return
+    - Slow Corner
+    conditions:
+    - name: Always
+    probability: 0.08
+  options:
+  - key: A
+    text: 改變轉向點與踩點補救
+    consequences:
+    - target: handling_module.handling
+      delta:
+        multiply: 0.93
+  - key: B
+    text: 不理，硬壓彎線
+    consequences:
+    - target: durability_module.durability
+      delta:
+        add: -5
+- id: mech_ecu_soft_reset
+  category: 機械事件
+  name: ECU 自動重啟
+  description:
+  - 車輛主控系統偵測不穩數據，進行短暫系統重啟，暫時失去油門響應。
+  trigger:
+    segment_type:
+    - Straight
+    - Chicane
+    conditions:
+    - name: Always
+    probability: 0.05
+  options:
+  - key: A
+    text: 等待系統恢復
+    consequences:
+    - target: speed_module.speed
+      delta:
+        multiply: 0.85
+  - key: B
+    text: 強制切回手動模式
+    consequences:
+    - target: handling_module.handling
+      delta:
+        multiply: 0.95
+- id: mech_airflow_sensor_fault
+  category: 機械事件
+  name: 進氣量感測異常
+  description:
+  - 引擎進氣系統感測器回報異常值，點火與燃油效率降低。
+  trigger:
+    segment_type:
+    - Uphill
+    - Straight
+    conditions:
+    - name: Always
+    probability: 0.06
+  options:
+  - key: A
+    text: 降轉穩態排出
+    consequences:
+    - target: engine_module.engine_temp
+      delta:
+        add: 2
+  - key: B
+    text: 保持推進力道
+    consequences:
+    - target: acceleration_module.acceleration
+      delta:
+        multiply: 0.9
+    - target: durability_module.durability
+      delta:
+        add: -4
+- id: mech_rear_diffuser_damage
+  category: 機械事件
+  name: 後擴散器損傷
+  description:
+  - 後擴散器遭異物擊中受損，下壓力與穩定性略微下降。
+  trigger:
+    segment_type:
+    - Straight
+    - Chicane
+    conditions:
+    - name: Always
+    probability: 0.05
+  options:
+  - key: A
+    text: 修正駕駛風格補彌
+    consequences:
+    - target: aero_module.downforce
+      delta:
+        multiply: 0.95
+    - target: handling_module.handling
+      delta:
+        multiply: 0.96
+  - key: B
+    text: 不顧後果持續衝刺
+    consequences:
+    - target: durability_module.durability
+      delta:
+        add: -6
+- id: mech_drive_shaft_overheat
+  category: 機械事件
+  name: 傳動軸過熱
+  description:
+  - 連續高扭力操作造成傳動軸溫度升高，磨耗風險上升。
+  trigger:
+    segment_type:
+    - Uphill
+    - Straight
+    conditions:
+    - name: Always
+    probability: 0.07
+  options:
+  - key: A
+    text: 放鬆扭力切換高檔
+    consequences:
+    - target: acceleration_module.acceleration
+      delta:
+        multiply: 0.94
+  - key: B
+    text: 高轉強壓續衝
+    consequences:
+    - target: durability_module.durability
+      delta:
+        add: -5
+    - target: engine_module.engine_temp
+      delta:
+        add: 3
