@@ -1,0 +1,104 @@
+- id: "strat_safety_car_deployment"
+  category: "策略事件"
+  name: "安全車出動"
+  description:
+    - "賽道發生事故，安全車進場，全體限速跟車！"
+  trigger:
+    segment_type: ["Pit Entry", "Straight", "Medium Corner"]
+    conditions:
+      - name: "ConsecutiveCollisions"
+        params: { count: 3 }
+    probability: 1.0
+  options:
+    - key: "A"
+      text: "乖乖跟車，節省油耗與胎溫"
+      consequences:
+        - target: "speed"
+          delta: { set: 80 }
+        - target: "fuel"
+          delta: { add: 3 }
+    - key: "B"
+      text: "進 Pit 補給＋修復"
+      consequences:
+        - target: "position"
+          delta: { add: -1 }
+        - target: "durability"
+          delta: { add: 10 }
+
+- id: "strat_fuel_strategy_update"
+  category: "策略事件"
+  name: "燃油策略更新"
+  description:
+    - "車隊建議根據剩餘圈數重新評估進站時機。"
+  trigger:
+    segment_type: ["Straight", "Uphill"]
+    conditions:
+      - name: "FuelBelow"
+        params: { threshold: 20 }
+    probability: 0.7
+  options:
+    - key: "A"
+      text: "立刻提早進站補油"
+      consequences:
+        - target: "fuel"
+          delta: { add: 50 }
+        - target: "position"
+          delta: { add: -1 }
+    - key: "B"
+      text: "再撐一圈，賭個天降奇蹟"
+      consequences:
+        - target: "engine_temp"
+          delta: { add: 5 }
+        - target: "durability"
+          delta: { add: -3 }
+
+- id: "strat_tire_strategy_call"
+  category: "策略事件"
+  name: "輪胎策略通知"
+  description:
+    - "根據當前磨損與溫度，考慮是否更換輪胎配方。"
+  trigger:
+    segment_type: ["Slow Corner", "Chicane"]
+    conditions:
+      - name: "TireWearAbove"
+        params: { threshold: 60 }
+    probability: 0.6
+  options:
+    - key: "A"
+      text: "更換中性胎，穩定至終點"
+      consequences:
+        - target: "tire_wear"
+          delta: { set: 0 }
+        - target: "handling"
+          delta: { multiply: 1.1 }
+    - key: "B"
+      text: "繼續拼一波，延後進站"
+      consequences:
+        - target: "tire_wear"
+          delta: { add: 10 }
+        - target: "speed"
+          delta: { multiply: 1.05 }
+
+- id: "strat_fuel_warning"
+  category: "策略事件"
+  name: "燃油過低警告"
+  description:
+    - "油表閃紅，距離下一個 Pit 還有 1 圈，是否風險續跑？"
+  trigger:
+    segment_type: ["Straight"]
+    conditions:
+      - name: "FuelBelow"
+        params:
+          threshold: 20
+    probability: 1.0
+  options:
+    - key: "A"
+      text: "立刻進站"
+      consequences:
+        - target: "fuel_module.fuel"
+          delta: { add: 40 }
+    - key: "B"
+      text: "撐過這圈"
+      consequences:
+        - target: "durability_module.durability"
+          delta: { add: -5 }

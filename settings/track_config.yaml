@@ -1,0 +1,23 @@
+- id: "S1"
+  track_type: "Straight"
+  attributes:
+    length: 300
+    base_event_chance: 0.03
+    recommended_speed: 280
+    estimated_avg_time: 12.0
+
+- id: "C1"
+  track_type: "Medium Corner"
+  attributes:
+    radius: 60
+    base_event_chance: 0.07
+    recommended_speed: 180
+    estimated_avg_time: 14.5
+
+- id: "RP1"
+  track_type: "Rough Patch"
+  attributes:
+    hazard_level: 0.4
+    tire_burst_chance: 0.05
+    base_event_chance: 0.1
+    estimated_avg_time: 16.0

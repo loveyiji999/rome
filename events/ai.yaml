@@ -1,0 +1,77 @@
+- id: "ai_block_maneuver"
+  category: "AI 互動事件"
+  name: "封鎖路線"
+  description:
+    - "AI 車手在彎道內部封死內線，迫使你只能從外側繞行。"
+  trigger:
+    segment_type: ["Medium Corner", "Hairpin Return"]
+    conditions:
+      - name: "DistanceLessThan"
+        params: { threshold: 2.0 }
+    probability: 1.0
+  options:
+    - key: "A"
+      text: "硬守內線，保持路權"
+      consequences:
+        - target: "handling"
+          delta: { multiply: 0.95 }
+        - target: "durability"
+          delta: { add: -2 }
+    - key: "B"
+      text: "改走外線，風險較低"
+      consequences:
+        - target: "speed"
+          delta: { multiply: 0.9 }
+        - target: "position"
+          delta: { add: -1 }
+
+- id: "ai_draft_break"
+  category: "AI 互動事件"
+  name: "尾流切斷"
+  description:
+    - "前方 AI 車手突然減速，讓你瞬間失去尾流加速優勢。"
+  trigger:
+    segment_type: ["Long Straight", "Straight"]
+    conditions:
+      - name: "InSlipstream"
+    probability: 0.8
+  options:
+    - key: "A"
+      text: "保持車距，等待時機"
+      consequences:
+        - target: "speed"
+          delta: { multiply: 0.95 }
+    - key: "B"
+      text: "立刻換線反超"
+      consequences:
+        - target: "handling"
+          delta: { multiply: 0.9 }
+        - target: "position"
+          delta: { add: 1 }
+
+- id: "ai_late_brake_challenge"
+  category: "AI 互動事件"
+  name: "急剎逼近"
+  description:
+    - "AI 車手在進彎前最後一刻剎車，造成你反應不及，可能衝太深。"
+  trigger:
+    segment_type: ["Slow Corner", "Chicane"]
+    conditions:
+      - name: "DistanceLessThan"
+        params: { threshold: 3.0 }
+    probability: 0.6
+  options:
+    - key: "A"
+      text: "提前跟剎，保守處理"
+      consequences:
+        - target: "speed"
+          delta: { multiply: 0.85 }
+        - target: "brake_efficiency"
+          delta: { multiply: 0.98 }
+    - key: "B"
+      text: "延後剎車拼內線"
+      consequences:
+        - target: "handling"
+          delta: { multiply: 0.9 }
+        - target: "durability"
+          delta: { add: -4 }

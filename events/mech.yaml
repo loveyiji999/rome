@@ -1,0 +1,77 @@
+- id: "mech_tire_pressure_drop"
+  category: "機械事件"
+  name: "輪胎氣壓下降"
+  description:
+    - "長時間高速後，發現前輪胎壓略微下降，抓地力明顯變差。"
+  trigger:
+    segment_type: ["Long Straight", "Downhill", "Rough Patch"]
+    conditions:
+      - name: "Always"
+    probability: 0.20
+  options:
+    - key: "A"
+      text: "立即進 Pit 充氣"
+      consequences:
+        - target: "position"
+          delta: { add: -1 }
+        - target: "tire_wear"
+          delta: { add: -10 }
+    - key: "B"
+      text: "硬撐下去，等待自然恢復"
+      consequences:
+        - target: "handling"
+          delta: { multiply: 0.85 }
+        - target: "speed"
+          delta: { multiply: 0.9 }
+
+- id: "mech_gearbox_jam"
+  category: "機械事件"
+  name: "變速箱卡檔"
+  description:
+    - "突然之間，變速箱卡住在某一檔位，無法正常換檔！"
+  trigger:
+    segment_type: ["Hairpin Return", "Chicane"]
+    conditions:
+      - name: "Always"
+    probability: 0.08
+  options:
+    - key: "A"
+      text: "強制重啟 ECU"
+      consequences:
+        - target: "durability"
+          delta: { add: -10 }
+        - target: "speed"
+          delta: { multiply: 0.95 }
+    - key: "B"
+      text: "嘗試以當前檔位撐過本圈"
+      consequences:
+        - target: "acceleration"
+          delta: { multiply: 0.6 }
+        - target: "engine_temp"
+          delta: { add: 8 }
+
+- id: "mech_brake_fade"
+  category: "機械事件"
+  name: "煞車熱衰減"
+  description:
+    - "連續重煞造成煞車系統過熱，剎車效果明顯下降！"
+  trigger:
+    segment_type: ["Downhill", "Slow Corner", "Chicane"]
+    conditions:
+      - name: "Always"
+    probability: 0.15
+  options:
+    - key: "A"
+      text: "提前剎車，確保安全過彎"
+      consequences:
+        - target: "speed"
+          delta: { multiply: 0.85 }
+        - target: "brake_efficiency"
+          delta: { multiply: 0.95 }
+    - key: "B"
+      text: "照舊踩點進彎，拼一把！"
+      consequences:
+        - target: "durability"
+          delta: { add: -7 }
+        - target: "handling"
+          delta: { multiply: 0.9 }
