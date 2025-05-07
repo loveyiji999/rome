@@ -1,23 +1,84 @@
-- id: "S1"
-  track_type: "Straight"
+- id: S1
+  track_type: Straight
   attributes:
     length: 300
     base_event_chance: 0.03
     recommended_speed: 280
     estimated_avg_time: 12.0
-
-- id: "C1"
-  track_type: "Medium Corner"
+- id: LS1
+  track_type: Long Straight
   attributes:
-    radius: 60
+    length: 400
+    base_event_chance: 0.04
+    recommended_speed: 300
+    estimated_avg_time: 10.5
+- id: MC1
+  track_type: Medium Corner
+  attributes:
+    radius: 80
+    base_event_chance: 0.06
+    recommended_speed: 200
+    estimated_avg_time: 14.0
+- id: SC1
+  track_type: Slow Corner
+  attributes:
+    radius: 45
     base_event_chance: 0.07
-    recommended_speed: 180
-    estimated_avg_time: 14.5
-
-- id: "RP1"
-  track_type: "Rough Patch"
-  attributes:
-    hazard_level: 0.4
-    tire_burst_chance: 0.05
-    base_event_chance: 0.1
+    recommended_speed: 120
     estimated_avg_time: 16.0
+- id: CH1
+  track_type: Chicane
+  attributes:
+    sequence_count: 2
+    base_event_chance: 0.08
+    recommended_speed: 140
+    estimated_avg_time: 13.5
+- id: UP1
+  track_type: Uphill
+  attributes:
+    grade: 5
+    base_event_chance: 0.05
+    recommended_speed: 220
+    estimated_avg_time: 13.2
+- id: DW1
+  track_type: Downhill
+  attributes:
+    grade: -6
+    base_event_chance: 0.06
+    recommended_speed: 250
+    estimated_avg_time: 12.8
+- id: RP1
+  track_type: Rough Patch
+  attributes:
+    hazard_level: 0.3
+    base_event_chance: 0.09
+    recommended_speed: 180
+    estimated_avg_time: 15.0
+- id: WS1
+  track_type: Wet Section
+  attributes:
+    friction_coefficient: 0.6
+    base_event_chance: 0.1
+    recommended_speed: 150
+    estimated_avg_time: 16.5
+- id: PE1
+  track_type: Pit Entry
+  attributes:
+    entry_delay: 3
+    base_event_chance: 0.07
+    recommended_speed: 100
+    estimated_avg_time: 18.0
+- id: CW1
+  track_type: Crosswind Zone
+  attributes:
+    wind_speed: 20
+    base_event_chance: 0.08
+    recommended_speed: 200
+    estimated_avg_time: 14.2
+- id: HP1
+  track_type: Hairpin Return
+  attributes:
+    angle: 160
+    base_event_chance: 0.06
+    recommended_speed: 100
+    estimated_avg_time: 17.0

@@ -138,7 +138,7 @@
   - key: A
     text: 減速等待空檔
     consequences:
-    - target: position
+    - target: race_info_module.position
       delta:
         add: -1
   - key: B
@@ -204,7 +204,7 @@
   - key: B
     text: 閃邊避免接觸
     consequences:
-    - target: position
+    - target: race_info_module.position
       delta:
         add: -1
 - id: ai_side_by_side_drag
@@ -285,7 +285,7 @@
   - key: B
     text: 減速等待下一彎
     consequences:
-    - target: position
+    - target: race_info_module.position
       delta:
         add: -1
 - id: ai_inside_dive_bomb
@@ -336,7 +336,7 @@
   - key: A
     text: 守內線讓外側 AI 過
     consequences:
-    - target: position
+    - target: race_info_module.position
       delta:
         add: -1
   - key: B
@@ -391,7 +391,7 @@
   - key: A
     text: 觀察等待空檔
     consequences:
-    - target: position
+    - target: race_info_module.position
       delta:
         add: -1
   - key: B
@@ -553,6 +553,6 @@
   - key: B
     text: 讓道暫避
     consequences:
-    - target: position
+    - target: race_info_module.position
       delta:
         add: -1

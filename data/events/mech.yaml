@@ -55,7 +55,7 @@
   - key: B
     text: 嘗試以當前檔位撐過本圈
     consequences:
-    - target: speed_module.acceleration
+    - target: acceleration_module.acceleration
       delta:
         multiply: 0.6
     - target: engine_temp
@@ -313,7 +313,7 @@
   - key: B
     text: 延後反應觀察數據
     consequences:
-    - target: position
+    - target: race_info_module.position
       delta:
         add: -1
 - id: mech_engine_misfire

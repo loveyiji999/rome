@@ -119,7 +119,7 @@
     - target: tire_module.tire_wear
       delta:
         set: 0
-    - target: position
+    - target: race_info_module.position
       delta:
         add: -1
   - key: B
@@ -192,7 +192,7 @@
     - target: tire_module.tire_wear
       delta:
         set: 0
-    - target: grip_coefficient
+    - target: tire_module.grip_coefficient
       delta:
         multiply: 0.95
 - id: strat_yellow_flag_response
@@ -220,7 +220,7 @@
     - target: durability_module.durability
       delta:
         add: -7
-    - target: position
+    - target: race_info_module.position
       delta:
         add: -1
 - id: strat_drs_available
@@ -266,7 +266,7 @@
     - target: tire_module.tire_wear
       delta:
         set: 0
-    - target: grip_coefficient
+    - target: tire_module.grip_coefficient
       delta:
         multiply: 1.05
   - key: B
@@ -293,7 +293,7 @@
     - target: fuel_module.fuel
       delta:
         add: -3
-    - target: position
+    - target: race_info_module.position
       delta:
         add: -1
   - key: B
@@ -326,7 +326,7 @@
   - key: B
     text: 偷偷微加速靠近對手
     consequences:
-    - target: position
+    - target: race_info_module.position
       delta:
         add: -1
     - target: durability_module.durability
@@ -375,7 +375,7 @@
     - target: tire_module.tire_wear
       delta:
         set: 0
-    - target: position
+    - target: race_info_module.position
       delta:
         add: -2
   - key: B
@@ -465,7 +465,7 @@
     - target: durability_module.durability
       delta:
         add: -3
-    - target: position
+    - target: race_info_module.position
       delta:
         add: 1
 - id: strat_risk_level_update
@@ -558,7 +558,7 @@
   - key: A
     text: 讓位配合團隊
     consequences:
-    - target: position
+    - target: race_info_module.position
       delta:
         add: -1
   - key: B
