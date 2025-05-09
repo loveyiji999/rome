@@ -1,0 +1,580 @@
+- id: mech_chain_warn_1
+  category: 機械事件
+  name: 模組1 - 異常預警
+  description:
+  - 系統模組 1 回報異常狀況，可能導致進一步故障。
+  trigger:
+    segment_type:
+    - Straight
+    - Uphill
+    conditions:
+    - name: Always
+    probability: 0.6
+  options:
+  - key: A
+    text: 主動進站檢查
+    consequences:
+    - target: durability_module.durability
+      delta:
+        add: 2
+  - key: B
+    text: 忽略警告
+    consequences:
+    - target: status_flags
+      delta:
+        add_flag: chain_warning_1
+- id: mech_chain_effect_1
+  category: 機械事件
+  name: 模組1 - 故障發作
+  description:
+  - 先前模組 1 的異常徵兆導致實際失效。
+  trigger:
+    segment_type:
+    - Hairpin Return
+    - Slow Corner
+    conditions:
+    - name: HasFlag
+      params:
+        flag: chain_warning_1
+    probability: 0.9
+  options:
+  - key: A
+    text: 緊急減速保守通過
+    consequences:
+    - target: handling_module.handling
+      delta:
+        multiply: 0.85
+    - target: status_flags
+      delta:
+        remove_flag: chain_warning_1
+  - key: B
+    text: 強撐推進略過區段
+    consequences:
+    - target: durability_module.durability
+      delta:
+        add: -6
+    - target: status_flags
+      delta:
+        remove_flag: chain_warning_1
+- id: mech_chain_warn_2
+  category: 機械事件
+  name: 模組2 - 異常預警
+  description:
+  - 系統模組 2 回報異常狀況，可能導致進一步故障。
+  trigger:
+    segment_type:
+    - Straight
+    - Uphill
+    conditions:
+    - name: Always
+    probability: 0.6
+  options:
+  - key: A
+    text: 主動進站檢查
+    consequences:
+    - target: durability_module.durability
+      delta:
+        add: 2
+  - key: B
+    text: 忽略警告
+    consequences:
+    - target: status_flags
+      delta:
+        add_flag: chain_warning_2
+- id: mech_chain_effect_2
+  category: 機械事件
+  name: 模組2 - 故障發作
+  description:
+  - 先前模組 2 的異常徵兆導致實際失效。
+  trigger:
+    segment_type:
+    - Hairpin Return
+    - Slow Corner
+    conditions:
+    - name: HasFlag
+      params:
+        flag: chain_warning_2
+    probability: 0.9
+  options:
+  - key: A
+    text: 緊急減速保守通過
+    consequences:
+    - target: handling_module.handling
+      delta:
+        multiply: 0.85
+    - target: status_flags
+      delta:
+        remove_flag: chain_warning_2
+  - key: B
+    text: 強撐推進略過區段
+    consequences:
+    - target: durability_module.durability
+      delta:
+        add: -6
+    - target: status_flags
+      delta:
+        remove_flag: chain_warning_2
+- id: mech_chain_warn_3
+  category: 機械事件
+  name: 模組3 - 異常預警
+  description:
+  - 系統模組 3 回報異常狀況，可能導致進一步故障。
+  trigger:
+    segment_type:
+    - Straight
+    - Uphill
+    conditions:
+    - name: Always
+    probability: 0.6
+  options:
+  - key: A
+    text: 主動進站檢查
+    consequences:
+    - target: durability_module.durability
+      delta:
+        add: 2
+  - key: B
+    text: 忽略警告
+    consequences:
+    - target: status_flags
+      delta:
+        add_flag: chain_warning_3
+- id: mech_chain_effect_3
+  category: 機械事件
+  name: 模組3 - 故障發作
+  description:
+  - 先前模組 3 的異常徵兆導致實際失效。
+  trigger:
+    segment_type:
+    - Hairpin Return
+    - Slow Corner
+    conditions:
+    - name: HasFlag
+      params:
+        flag: chain_warning_3
+    probability: 0.9
+  options:
+  - key: A
+    text: 緊急減速保守通過
+    consequences:
+    - target: handling_module.handling
+      delta:
+        multiply: 0.85
+    - target: status_flags
+      delta:
+        remove_flag: chain_warning_3
+  - key: B
+    text: 強撐推進略過區段
+    consequences:
+    - target: durability_module.durability
+      delta:
+        add: -6
+    - target: status_flags
+      delta:
+        remove_flag: chain_warning_3
+- id: mech_chain_warn_4
+  category: 機械事件
+  name: 模組4 - 異常預警
+  description:
+  - 系統模組 4 回報異常狀況，可能導致進一步故障。
+  trigger:
+    segment_type:
+    - Straight
+    - Uphill
+    conditions:
+    - name: Always
+    probability: 0.6
+  options:
+  - key: A
+    text: 主動進站檢查
+    consequences:
+    - target: durability_module.durability
+      delta:
+        add: 2
+  - key: B
+    text: 忽略警告
+    consequences:
+    - target: status_flags
+      delta:
+        add_flag: chain_warning_4
+- id: mech_chain_effect_4
+  category: 機械事件
+  name: 模組4 - 故障發作
+  description:
+  - 先前模組 4 的異常徵兆導致實際失效。
+  trigger:
+    segment_type:
+    - Hairpin Return
+    - Slow Corner
+    conditions:
+    - name: HasFlag
+      params:
+        flag: chain_warning_4
+    probability: 0.9
+  options:
+  - key: A
+    text: 緊急減速保守通過
+    consequences:
+    - target: handling_module.handling
+      delta:
+        multiply: 0.85
+    - target: status_flags
+      delta:
+        remove_flag: chain_warning_4
+  - key: B
+    text: 強撐推進略過區段
+    consequences:
+    - target: durability_module.durability
+      delta:
+        add: -6
+    - target: status_flags
+      delta:
+        remove_flag: chain_warning_4
+- id: mech_chain_warn_5
+  category: 機械事件
+  name: 模組5 - 異常預警
+  description:
+  - 系統模組 5 回報異常狀況，可能導致進一步故障。
+  trigger:
+    segment_type:
+    - Straight
+    - Uphill
+    conditions:
+    - name: Always
+    probability: 0.6
+  options:
+  - key: A
+    text: 主動進站檢查
+    consequences:
+    - target: durability_module.durability
+      delta:
+        add: 2
+  - key: B
+    text: 忽略警告
+    consequences:
+    - target: status_flags
+      delta:
+        add_flag: chain_warning_5
+- id: mech_chain_effect_5
+  category: 機械事件
+  name: 模組5 - 故障發作
+  description:
+  - 先前模組 5 的異常徵兆導致實際失效。
+  trigger:
+    segment_type:
+    - Hairpin Return
+    - Slow Corner
+    conditions:
+    - name: HasFlag
+      params:
+        flag: chain_warning_5
+    probability: 0.9
+  options:
+  - key: A
+    text: 緊急減速保守通過
+    consequences:
+    - target: handling_module.handling
+      delta:
+        multiply: 0.85
+    - target: status_flags
+      delta:
+        remove_flag: chain_warning_5
+  - key: B
+    text: 強撐推進略過區段
+    consequences:
+    - target: durability_module.durability
+      delta:
+        add: -6
+    - target: status_flags
+      delta:
+        remove_flag: chain_warning_5
+- id: mech_chain_warn_11
+  category: 機械事件
+  name: 模組11 - 狀態異常預警
+  description:
+  - 模組 11 感測數值異常，系統建議監控或維修。
+  trigger:
+    segment_type:
+    - Straight
+    - Crosswind Zone
+    conditions:
+    - name: Always
+    probability: 0.65
+  options:
+  - key: A
+    text: 主動切換模式穩定狀況
+    consequences:
+    - target: engine_module.cooling_efficiency
+      delta:
+        multiply: 1.02
+  - key: B
+    text: 忽略提示繼續駕駛
+    consequences:
+    - target: status_flags
+      delta:
+        add_flag: chain_warning_11
+- id: mech_chain_effect_11
+  category: 機械事件
+  name: 模組11 - 故障擴大
+  description:
+  - 未處理模組 11 預警，現已演變為系統異常。
+  trigger:
+    segment_type:
+    - Chicane
+    - Downhill
+    conditions:
+    - name: HasFlag
+      params:
+        flag: chain_warning_11
+    probability: 0.85
+  options:
+  - key: A
+    text: 緊急控制避免擴散
+    consequences:
+    - target: brake_module.brake_efficiency
+      delta:
+        multiply: 0.9
+    - target: status_flags
+      delta:
+        remove_flag: chain_warning_11
+  - key: B
+    text: 強撐操控全速硬過
+    consequences:
+    - target: durability_module.durability
+      delta:
+        add: -8
+    - target: status_flags
+      delta:
+        remove_flag: chain_warning_11
+- id: mech_chain_warn_12
+  category: 機械事件
+  name: 模組12 - 狀態異常預警
+  description:
+  - 模組 12 感測數值異常，系統建議監控或維修。
+  trigger:
+    segment_type:
+    - Straight
+    - Crosswind Zone
+    conditions:
+    - name: Always
+    probability: 0.65
+  options:
+  - key: A
+    text: 主動切換模式穩定狀況
+    consequences:
+    - target: engine_module.cooling_efficiency
+      delta:
+        multiply: 1.02
+  - key: B
+    text: 忽略提示繼續駕駛
+    consequences:
+    - target: status_flags
+      delta:
+        add_flag: chain_warning_12
+- id: mech_chain_effect_12
+  category: 機械事件
+  name: 模組12 - 故障擴大
+  description:
+  - 未處理模組 12 預警，現已演變為系統異常。
+  trigger:
+    segment_type:
+    - Chicane
+    - Downhill
+    conditions:
+    - name: HasFlag
+      params:
+        flag: chain_warning_12
+    probability: 0.85
+  options:
+  - key: A
+    text: 緊急控制避免擴散
+    consequences:
+    - target: brake_module.brake_efficiency
+      delta:
+        multiply: 0.9
+    - target: status_flags
+      delta:
+        remove_flag: chain_warning_12
+  - key: B
+    text: 強撐操控全速硬過
+    consequences:
+    - target: durability_module.durability
+      delta:
+        add: -8
+    - target: status_flags
+      delta:
+        remove_flag: chain_warning_12
+- id: mech_chain_warn_13
+  category: 機械事件
+  name: 模組13 - 狀態異常預警
+  description:
+  - 模組 13 感測數值異常，系統建議監控或維修。
+  trigger:
+    segment_type:
+    - Straight
+    - Crosswind Zone
+    conditions:
+    - name: Always
+    probability: 0.65
+  options:
+  - key: A
+    text: 主動切換模式穩定狀況
+    consequences:
+    - target: engine_module.cooling_efficiency
+      delta:
+        multiply: 1.02
+  - key: B
+    text: 忽略提示繼續駕駛
+    consequences:
+    - target: status_flags
+      delta:
+        add_flag: chain_warning_13
+- id: mech_chain_effect_13
+  category: 機械事件
+  name: 模組13 - 故障擴大
+  description:
+  - 未處理模組 13 預警，現已演變為系統異常。
+  trigger:
+    segment_type:
+    - Chicane
+    - Downhill
+    conditions:
+    - name: HasFlag
+      params:
+        flag: chain_warning_13
+    probability: 0.85
+  options:
+  - key: A
+    text: 緊急控制避免擴散
+    consequences:
+    - target: brake_module.brake_efficiency
+      delta:
+        multiply: 0.9
+    - target: status_flags
+      delta:
+        remove_flag: chain_warning_13
+  - key: B
+    text: 強撐操控全速硬過
+    consequences:
+    - target: durability_module.durability
+      delta:
+        add: -8
+    - target: status_flags
+      delta:
+        remove_flag: chain_warning_13
+- id: mech_chain_warn_14
+  category: 機械事件
+  name: 模組14 - 狀態異常預警
+  description:
+  - 模組 14 感測數值異常，系統建議監控或維修。
+  trigger:
+    segment_type:
+    - Straight
+    - Crosswind Zone
+    conditions:
+    - name: Always
+    probability: 0.65
+  options:
+  - key: A
+    text: 主動切換模式穩定狀況
+    consequences:
+    - target: engine_module.cooling_efficiency
+      delta:
+        multiply: 1.02
+  - key: B
+    text: 忽略提示繼續駕駛
+    consequences:
+    - target: status_flags
+      delta:
+        add_flag: chain_warning_14
+- id: mech_chain_effect_14
+  category: 機械事件
+  name: 模組14 - 故障擴大
+  description:
+  - 未處理模組 14 預警，現已演變為系統異常。
+  trigger:
+    segment_type:
+    - Chicane
+    - Downhill
+    conditions:
+    - name: HasFlag
+      params:
+        flag: chain_warning_14
+    probability: 0.85
+  options:
+  - key: A
+    text: 緊急控制避免擴散
+    consequences:
+    - target: brake_module.brake_efficiency
+      delta:
+        multiply: 0.9
+    - target: status_flags
+      delta:
+        remove_flag: chain_warning_14
+  - key: B
+    text: 強撐操控全速硬過
+    consequences:
+    - target: durability_module.durability
+      delta:
+        add: -8
+    - target: status_flags
+      delta:
+        remove_flag: chain_warning_14
+- id: mech_chain_warn_15
+  category: 機械事件
+  name: 模組15 - 狀態異常預警
+  description:
+  - 模組 15 感測數值異常，系統建議監控或維修。
+  trigger:
+    segment_type:
+    - Straight
+    - Crosswind Zone
+    conditions:
+    - name: Always
+    probability: 0.65
+  options:
+  - key: A
+    text: 主動切換模式穩定狀況
+    consequences:
+    - target: engine_module.cooling_efficiency
+      delta:
+        multiply: 1.02
+  - key: B
+    text: 忽略提示繼續駕駛
+    consequences:
+    - target: status_flags
+      delta:
+        add_flag: chain_warning_15
+- id: mech_chain_effect_15
+  category: 機械事件
+  name: 模組15 - 故障擴大
+  description:
+  - 未處理模組 15 預警，現已演變為系統異常。
+  trigger:
+    segment_type:
+    - Chicane
+    - Downhill
+    conditions:
+    - name: HasFlag
+      params:
+        flag: chain_warning_15
+    probability: 0.85
+  options:
+  - key: A
+    text: 緊急控制避免擴散
+    consequences:
+    - target: brake_module.brake_efficiency
+      delta:
+        multiply: 0.9
+    - target: status_flags
+      delta:
+        remove_flag: chain_warning_15
+  - key: B
+    text: 強撐操控全速硬過
+    consequences:
+    - target: durability_module.durability
+      delta:
+        add: -8
+    - target: status_flags
+      delta:
+        remove_flag: chain_warning_15

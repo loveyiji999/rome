@@ -5,9 +5,11 @@ class CarState:
     def __init__(self, schema_path="car_state_schema.yaml", limits_path="car_state_limits.yaml"):
         with open(schema_path, 'r', encoding='utf-8') as f:
             self.state = yaml.safe_load(f)
-
         with open(limits_path, 'r', encoding='utf-8') as f:
             self.limits = yaml.safe_load(f)
+
+        # 狀態標記初始化
+        self.flags = set()
 
     def get(self, key_path):
         parts = key_path.split(".")
@@ -29,13 +31,20 @@ class CarState:
             d[final_key] = d.get(final_key, 0) + value
         elif method == "multiply":
             d[final_key] = d.get(final_key, 1) * value
+        elif method == "add_flag":
+            self.add_flag(value)
+            return
+        elif method == "remove_flag":
+            self.remove_flag(value)
+            return
         else:
-            raise ValueError(f"Unknown method: {method}")
+            raise ValueError(f"未知變動方式：{method}")
 
-        # 自動 clamp
         self._clamp_value(keys, d, final_key)
 
     def _clamp_value(self, key_parts, target_dict, key):
+        if len(key_parts) < 2:
+            return
         module = key_parts[0]
         attr = key_parts[1]
         limit_def = self.limits.get(module, {}).get(attr)
@@ -45,8 +54,19 @@ class CarState:
             max_v = limit_def.get("max", v)
             target_dict[key] = max(min(v, max_v), min_v)
 
+    def add_flag(self, flag):
+        self.flags.add(flag)
+
+    def remove_flag(self, flag):
+        self.flags.discard(flag)
+
+    def has_flag(self, flag):
+        return flag in self.flags
+
     def summary(self):
-        return self._flatten(self.state)
+        flat = self._flatten(self.state)
+        flat["status_flags"] = list(self.flags)
+        return flat
 
     def _flatten(self, d, parent_key="", sep="."):
         items = {}
