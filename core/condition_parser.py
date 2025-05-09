@@ -29,7 +29,10 @@ def evaluate_condition(cond: dict, car_state, context: dict) -> bool:
     elif name == "Expression":
         expr = params.get("expr", "")
         try:
-            return eval(expr, {}, {"car": car_state})
+            return eval(expr, {}, {
+                "car": car_state,
+                "context": context
+            })
         except Exception as e:
             print(f"[條件表達式錯誤] {expr} → {e}")
             return False
