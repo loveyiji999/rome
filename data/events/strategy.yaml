@@ -43,9 +43,9 @@
     - Straight
     - Uphill
     conditions:
-    - name: FuelBelow
+    - name: Expression
       params:
-        threshold: 20
+        expr: car.get('fuel_module.fuel') < 20
     probability: 0.7
   options:
   - key: A
@@ -77,9 +77,9 @@
     - Slow Corner
     - Chicane
     conditions:
-    - name: TireWearAbove
+    - name: Expression
       params:
-        threshold: 60
+        expr: car.get('tire_module.tire_wear') > 60
     probability: 0.6
   options:
   - key: A
@@ -111,9 +111,9 @@
     - Straight
     - Uphill
     conditions:
-    - name: TireWearAbove
+    - name: Expression
       params:
-        threshold: 65
+        expr: car.get('tire_module.tire_wear') > 65
     probability: 0.8
   options:
   - key: A
@@ -146,9 +146,9 @@
     - Straight
     - Long Straight
     conditions:
-    - name: FuelBelow
+    - name: Expression
       params:
-        threshold: 18
+        expr: car.get('fuel_module.fuel') < 18
     probability: 0.75
   options:
   - key: A
@@ -469,9 +469,9 @@
     segment_type:
     - Slow Corner
     conditions:
-    - name: DistanceLessThan
+    - name: Expression
       params:
-        threshold: 2.0
+        expr: context['distance_to_ai'] < 2.0
     probability: 0.65
   options:
   - key: A
@@ -548,9 +548,9 @@
     segment_type:
     - Any
     conditions:
-    - name: LapsCompletedOver
+    - name: Expression
       params:
-        count: 9
+        expr: car.get('race_info_module.laps_completed') > 9
     probability: 0.95
   options:
   - key: A
@@ -576,9 +576,9 @@
     - Straight
     - Medium Corner
     conditions:
-    - name: DistanceLessThan
+    - name: Expression
       params:
-        threshold: 1.5
+        expr: context['distance_to_ai'] < 1.5
     probability: 0.65
   options:
   - key: A
@@ -624,7 +624,7 @@
   category: 策略事件
   name: 區段時間提醒
   description:
-  - 本圈 Sector 2 慢於預期，是否要提升 ERS 或油門反應？
+  - 本 Sector  慢於預期，是否要提升 ERS 或油門反應？
   trigger:
     segment_type:
     - Chicane

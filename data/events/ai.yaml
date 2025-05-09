@@ -8,9 +8,9 @@
     - Medium Corner
     - Hairpin Return
     conditions:
-    - name: DistanceLessThan
+    - name: Expression
       params:
-        threshold: 2.0
+        expr: context['distance_to_ai'] < 2.0
     probability: 1.0
   options:
   - key: A
@@ -72,9 +72,9 @@
     - Slow Corner
     - Chicane
     conditions:
-    - name: DistanceLessThan
+    - name: Expression
       params:
-        threshold: 3.0
+        expr: context['distance_to_ai'] < 3.0
     probability: 0.6
   options:
   - key: A
@@ -135,9 +135,9 @@
     - Medium Corner
     - Hairpin Return
     conditions:
-    - name: DistanceLessThan
+    - name: Expression
       params:
-        threshold: 2.0
+        expr: context['distance_to_ai'] < 2.0
     probability: 0.8
   options:
   - key: A
@@ -166,9 +166,9 @@
     - Straight
     - Chicane
     conditions:
-    - name: DistanceLessThan
+    - name: Expression
       params:
-        threshold: 2.5
+        expr: context['distance_to_ai'] < 2.5
     probability: 0.7
   options:
   - key: A
@@ -197,9 +197,9 @@
     - Straight
     - Chicane
     conditions:
-    - name: DistanceLessThan
+    - name: Expression
       params:
-        threshold: 2.0
+        expr: context['distance_to_ai'] < 2.0
     probability: 0.65
   options:
   - key: A
@@ -224,9 +224,9 @@
     segment_type:
     - Long Straight
     conditions:
-    - name: DistanceLessThan
+    - name: Expression
       params:
-        threshold: 1.5
+        expr: context['distance_to_ai'] < 1.5
     probability: 0.85
   options:
   - key: A
@@ -251,9 +251,9 @@
     segment_type:
     - Pit Entry
     conditions:
-    - name: DistanceLessThan
+    - name: Expression
       params:
-        threshold: 1.5
+        expr: context['distance_to_ai'] < 1.5
     probability: 0.75
   options:
   - key: A
@@ -282,9 +282,9 @@
     segment_type:
     - Medium Corner
     conditions:
-    - name: DistanceLessThan
+    - name: Expression
       params:
-        threshold: 2.0
+        expr: context['distance_to_ai'] < 2.0
     probability: 0.6
   options:
   - key: A
@@ -310,9 +310,9 @@
     - Hairpin Return
     - Slow Corner
     conditions:
-    - name: DistanceLessThan
+    - name: Expression
       params:
-        threshold: 2.5
+        expr: context['distance_to_ai'] < 2.5
     probability: 0.7
   options:
   - key: A
@@ -342,9 +342,9 @@
     - Straight
     - Chicane
     conditions:
-    - name: DistanceLessThan
+    - name: Expression
       params:
-        threshold: 1.5
+        expr: context['distance_to_ai'] < 1.5
     probability: 0.65
   options:
   - key: A
@@ -430,9 +430,9 @@
     segment_type:
     - Hairpin Return
     conditions:
-    - name: DistanceLessThan
+    - name: Expression
       params:
-        threshold: 2.0
+        expr: context['distance_to_ai'] < 2.0
     probability: 0.7
   options:
   - key: A
@@ -482,9 +482,9 @@
     segment_type:
     - Medium Corner
     conditions:
-    - name: DistanceLessThan
+    - name: Expression
       params:
-        threshold: 1.5
+        expr: context['distance_to_ai'] < 1.5
     probability: 0.7
   options:
   - key: A
@@ -509,9 +509,9 @@
     segment_type:
     - Long Straight
     conditions:
-    - name: DistanceLessThan
+    - name: Expression
       params:
-        threshold: 2.0
+        expr: context['distance_to_ai'] < 2.0
     probability: 0.75
   options:
   - key: A
@@ -565,9 +565,9 @@
     - Hairpin Return
     - Slow Corner
     conditions:
-    - name: DistanceLessThan
+    - name: Expression
       params:
-        threshold: 2.0
+        expr: context['distance_to_ai'] < 2.0
     probability: 0.7
   options:
   - key: A

@@ -582,7 +582,7 @@
       delta:
         multiply: 0.94
   - key: B
-    text: 高轉強壓續衝
+    text: 高轉強壓繼續衝
     consequences:
     - target: durability_module.durability
       delta:
