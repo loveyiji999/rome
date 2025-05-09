@@ -1,46 +1,34 @@
-# 更新測試檔案，讓它在通過後自動印出 5 回合事件摘要
-from pathlib import Path
-test_code_verbose = """
-# tests/test_main_simulation.py
+# scripts/main.py
+import sys
+import os
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-import pytest
 from core.car_state import CarState
 from core.track_loader import load_track_segments
 from core.turn_flow import TurnFlow
+from core.event_engine import load_events_from_folder
+from core.map_loader import load_track_map
 
-def test_five_turn_simulation():
-    # 準備初始車輛與賽道資料
+def main(turns=20):
+    # 初始化車輛與賽道段資料
     car = CarState(schema_path="data/car_state_schema.yaml", limits_path="data/car_state_limits.yaml")
-    segments = load_track_segments("data/track_config.yaml")
-    flow = TurnFlow(car, segments, seed=1234)
+    all_segments = load_track_segments("data/track_config.yaml")
+    
+    # 地圖讀取與拼接
+    map_info, track = load_track_map("data/maps/format F1 Sim V1.yaml", all_segments)
 
-    # 執行五回合模擬
-    for _ in range(5):
+    # 載入事件
+    events = load_events_from_folder("data/events")
+
+    # 初始化流程模組
+    flow = TurnFlow(car, track, seed=2025, events=events)
+
+    # 模擬
+    for _ in range(turns):
         flow.simulate_turn()
 
-    # 檢查 log 長度正確
-    assert len(flow.log) == 5
+    # 輸出紀錄
+    flow.print_log()
 
-    # 檢查每回合包含必要欄位
-    for entry in flow.log:
-        assert "turn" in entry
-        assert "segment" in entry
-        assert "event" in entry
-        assert "pre_state" in entry
-        assert "post_state" in entry
-
-    # 至少有一回合觸發事件
-    triggered = any(entry["event"] != "None" for entry in flow.log)
-    assert triggered
-
-    # 額外：印出所有回合摘要
-    print("\\n--- 五回合模擬事件摘要 ---")
-    for entry in flow.log:
-        print(f"第 {entry['turn']} 回合 - 切片：{entry['segment']} - 事件：{entry['event']}")
-        print(f"  前：{entry['pre_state']}")
-        print(f"  後：{entry['post_state']}\\n")
-"""
-
-test_path = Path("data/test_main_simulation.py")
-test_path.write_text(test_code_verbose.strip(), encoding="utf-8")
-test_path
+if __name__ == "__main__":
+    main(turns=20)

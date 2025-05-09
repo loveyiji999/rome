@@ -1,0 +1,17 @@
+name: 正規 F1 模擬賽道 v1
+author: 官方測試地圖
+description: 模擬典型中等長度的現代 F1 賽道，共 3 圈，每圈包含12種不同路段組成。
+lap_count: 3
+segments:
+- S1
+- MC1
+- UP1
+- CH1
+- LS1
+- CW1
+- HP1
+- DW1
+- RP1
+- SC1
+- WS1
+- PE1
