@@ -1,4 +1,5 @@
 import yaml
+import random
 from pathlib import Path
 from core.condition_parser import evaluate_condition
 
@@ -29,15 +30,33 @@ class Event:
         return random_obj.random() < prob
 
     def apply_option(self, option_key, car_state):
+        """
+        Apply the chosen option's consequences to car_state,
+        and return a randomly selected feedback message (or None).
+        """
         for opt in self.options:
             if opt["key"] == option_key:
-                for effect in opt["consequences"]:
+                # 1. apply consequences
+                for effect in opt.get("consequences", []):
                     target = effect["target"]
                     delta = effect["delta"]
                     for method, value in delta.items():
                         car_state.apply_change(target, method, value)
-                return
-        raise ValueError(f"選項 {option_key} 不存在於事件 {self.id}")
+
+                # 2. pick feedback
+                feedback_list = opt.get("feedback", [])
+                if feedback_list:
+                    feedback_msg = random.choice(feedback_list)
+                    # If you later want templating, you can uncomment and adapt:
+                    # feedback_msg = feedback_msg.format(
+                    #     speed=car_state.get('speed_module.speed'),
+                    #     tire_wear=car_state.get('tire_module.tire_wear'),
+                    #     gap=car_state.get('race_info_module.gap_to_leader')
+                    # )
+                    return feedback_msg
+                return None
+
+        raise ValueError(f"選項 {option_key} 不存在於事件 {self.id}")  # :contentReference[oaicite:0]{index=0}:contentReference[oaicite:1]{index=1}
 
     def get_option_keys(self):
         return [opt["key"] for opt in self.options]
