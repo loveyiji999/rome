@@ -1,5 +1,4 @@
-# map_editor_gui_v6.py
-# GUI 編輯器支援段落參數編輯、自動產生 custom 段落並替換地圖中段落 ID
+# map_editor_gui_v7.py - GUI 編輯器支援段落名稱 title 欄位
 
 import tkinter as tk
 from tkinter import messagebox
@@ -14,7 +13,7 @@ CUSTOM_SEG_PATH = "data/segments/custom_segments.yaml"
 class MapEditorApp:
     def __init__(self, master):
         self.master = master
-        self.master.title("地圖編輯器 v6（段落屬性可編輯）")
+        self.master.title("地圖編輯器 v7 - 支援段落名稱 title")
 
         self.map_listbox = tk.Listbox(master, width=30)
         self.map_listbox.grid(row=0, column=0, rowspan=12, sticky="ns")
@@ -39,12 +38,17 @@ class MapEditorApp:
 
         tk.Button(master, text="↑ 上移", command=self.move_segment_up).grid(row=5, column=1, sticky="e")
         tk.Button(master, text="↓ 下移", command=self.move_segment_down).grid(row=5, column=2, sticky="w")
-
         tk.Button(master, text="刪除段落", command=self.delete_selected_segment).grid(row=6, column=1, sticky="w")
         tk.Button(master, text="儲存段落為自定義", command=self.save_segment_as_custom).grid(row=6, column=2, sticky="e")
 
         self.attr_box = tk.LabelFrame(master, text="段落屬性（可編輯）", padx=5, pady=5)
         self.attr_box.grid(row=7, column=1, columnspan=2, sticky="we")
+
+        # 段落名稱欄位（title）
+        tk.Label(self.attr_box, text="段落名稱 (title)").grid(row=0, column=0, sticky="w")
+        self.title_entry = tk.Entry(self.attr_box, width=30)
+        self.title_entry.grid(row=0, column=1)
+
         self.attr_entries = {}
 
         self.save_btn = tk.Button(master, text="儲存地圖", command=self.save_map)
@@ -54,41 +58,35 @@ class MapEditorApp:
         self.delete_btn.grid(row=8, column=2, sticky="w")
 
         tk.Label(master, text="基礎段落清單").grid(row=0, column=3, sticky="w")
-        self.base_segment_listbox = tk.Listbox(master, height=20, width=20)
+        self.base_segment_listbox = tk.Listbox(master, height=20, width=25)
         self.base_segment_listbox.grid(row=1, column=3, rowspan=8, sticky="n")
         self.base_segment_listbox.bind("<<ListboxSelect>>", self.append_segment_from_list)
-
+        self.title_map = {}  # ID -> title
         self.segment_db = self.load_segment_defs()
         self.load_base_segment_list()
         self.load_map_list()
 
+    def load_map_list(self):
+        self.map_listbox.delete(0, tk.END)
+        if not os.path.exists(MAP_DIR):
+            os.makedirs(MAP_DIR)
+        for fname in os.listdir(MAP_DIR):
+            if fname.endswith(".yaml"):
+                self.map_listbox.insert(tk.END, fname)
+
     def load_segment_defs(self):
         result = {}
+        self.title_map.clear()
         for path in [SEGMENT_DEF_PATH, CUSTOM_SEG_PATH]:
             if not os.path.exists(path): continue
             with open(path, "r", encoding="utf-8") as f:
                 segs = yaml.safe_load(f)
                 for seg in segs:
                     result[seg["id"]] = seg["attributes"]
+                    if "title" in seg:
+                        self.title_map[seg["id"]] = seg["title"]
         return result
-
-    def load_base_segment_list(self):
-        self.base_segment_listbox.delete(0, tk.END)
-        for seg_id in sorted(self.segment_db.keys()):
-            self.base_segment_listbox.insert(tk.END, seg_id)
-
-    def append_segment_from_list(self, event):
-        idx = self.base_segment_listbox.curselection()
-        if not idx: return
-        seg_id = self.base_segment_listbox.get(idx[0])
-        self.segment_listbox.insert(tk.END, seg_id)
-
-    def load_map_list(self):
-        self.map_listbox.delete(0, tk.END)
-        for fname in os.listdir(MAP_DIR):
-            if fname.endswith(".yaml"):
-                self.map_listbox.insert(tk.END, fname)
-
+    
     def load_selected_map(self, event):
         if not self.map_listbox.curselection():
             return
@@ -97,11 +95,14 @@ class MapEditorApp:
         path = os.path.join(MAP_DIR, fname)
         with open(path, "r", encoding="utf-8") as f:
             data = yaml.safe_load(f)
+
         self.current_file = path
         self.name_entry.delete(0, tk.END)
         self.name_entry.insert(0, data.get("name", ""))
+
         self.author_entry.delete(0, tk.END)
         self.author_entry.insert(0, data.get("author", ""))
+
         self.laps_entry.delete(0, tk.END)
         self.laps_entry.insert(0, str(data.get("lap_count", 1)))
 
@@ -110,18 +111,38 @@ class MapEditorApp:
             self.segment_listbox.insert(tk.END, seg)
         self.show_segment_attributes()
 
+    def load_base_segment_list(self):
+        self.base_segment_listbox.delete(0, tk.END)
+        for seg_id in sorted(self.segment_db.keys()):
+            label = f"{seg_id}"
+            if seg_id in self.title_map:
+                label += f" - {self.title_map[seg_id]}"
+            self.base_segment_listbox.insert(tk.END, label)
+
+    def append_segment_from_list(self, event):
+        idx = self.base_segment_listbox.curselection()
+        if not idx: return
+        label = self.base_segment_listbox.get(idx[0])
+        seg_id = label.split(" - ")[0]
+        self.segment_listbox.insert(tk.END, seg_id)
+
     def show_segment_attributes(self, event=None):
         for widget in self.attr_box.winfo_children():
-            if isinstance(widget, tk.Entry) or isinstance(widget, tk.Label):
+            if isinstance(widget, tk.Entry) and widget != self.title_entry:
                 widget.destroy()
+        self.title_entry.delete(0, tk.END)
+
         idx = self.segment_listbox.curselection()
         if not idx:
             return
         seg_id = self.segment_listbox.get(idx[0])
         self.selected_segment_id = seg_id
         attr = self.segment_db.get(seg_id, {})
+        if seg_id in self.title_map:
+            self.title_entry.insert(0, self.title_map[seg_id])
+
         self.attr_entries.clear()
-        row = 0
+        row = 1
         for k, v in attr.items():
             tk.Label(self.attr_box, text=k).grid(row=row, column=0, sticky="w")
             e = tk.Entry(self.attr_box, width=20)
@@ -144,18 +165,20 @@ class MapEditorApp:
         new_id = generate_new_custom_id(old_id)
         new_data = {
             "id": new_id,
+            "title": self.title_entry.get(),
             "track_type": old_id.split("_")[0] if "_" in old_id else old_id[:2],
             "attributes": new_attrs
         }
         save_custom_segment(new_data)
         self.segment_db[new_id] = new_attrs
+        self.title_map[new_id] = new_data["title"]
         idx = self.segment_listbox.curselection()[0]
         self.segment_listbox.delete(idx)
         self.segment_listbox.insert(idx, new_id)
         self.segment_listbox.select_set(idx)
         self.load_base_segment_list()
         messagebox.showinfo("成功", f"段落已另存為 {new_id} 並套用至地圖")
-
+        
     def move_segment_up(self):
         idx = self.segment_listbox.curselection()
         if not idx or idx[0] == 0:
@@ -181,6 +204,7 @@ class MapEditorApp:
         if not idx:
             return
         self.segment_listbox.delete(idx[0])
+        self.title_entry.delete(0, tk.END)
 
     def save_map(self):
         if not hasattr(self, "current_file"):
