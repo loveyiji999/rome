@@ -22,6 +22,7 @@
     - target: durability_module.durability
       delta:
         add: -2
+    feedback: []
   - key: B
     text: 改走外線，風險較低
     consequences:
@@ -31,6 +32,7 @@
     - target: race_info_module.position
       delta:
         add: -1
+    feedback: []
   cooldown: 2
   mutex: ai_attack
 - id: ai_draft_break
@@ -52,6 +54,7 @@
     - target: speed_module.speed
       delta:
         multiply: 0.95
+    feedback: []
   - key: B
     text: 立刻換線反超
     consequences:
@@ -61,6 +64,7 @@
     - target: race_info_module.position
       delta:
         add: 1
+    feedback: []
   cooldown: 2
 - id: ai_late_brake_challenge
   category: AI 互動事件
@@ -86,6 +90,7 @@
     - target: brake_module.brake_efficiency
       delta:
         multiply: 0.98
+    feedback: []
   - key: B
     text: 延後剎車拼內線
     consequences:
@@ -95,6 +100,7 @@
     - target: durability_module.durability
       delta:
         add: -4
+    feedback: []
   cooldown: 2
 - id: ai_slipstream_steal
   category: AI 互動事件
@@ -115,6 +121,7 @@
     - target: speed_module.speed
       delta:
         multiply: 0.97
+    feedback: []
   - key: B
     text: 冒險從外側再壓過去
     consequences:
@@ -124,6 +131,7 @@
     - target: durability_module.durability
       delta:
         add: -3
+    feedback: []
   cooldown: 2
 - id: ai_team_order_block
   category: AI 互動事件
@@ -146,6 +154,7 @@
     - target: race_info_module.position
       delta:
         add: -1
+    feedback: []
   - key: B
     text: 強行突破縫隙
     consequences:
@@ -155,6 +164,7 @@
     - target: handling_module.handling
       delta:
         multiply: 0.93
+    feedback: []
   cooldown: 2
 - id: ai_fake_defensive_move
   category: AI 互動事件
@@ -177,6 +187,7 @@
     - target: speed_module.speed
       delta:
         multiply: 0.9
+    feedback: []
   - key: B
     text: 同時變線硬超
     consequences:
@@ -186,6 +197,7 @@
     - target: handling_module.handling
       delta:
         multiply: 0.92
+    feedback: []
   cooldown: 2
 - id: ai_brake_check
   category: AI 互動事件
@@ -208,12 +220,14 @@
     - target: brake_module.brake_efficiency
       delta:
         multiply: 0.97
+    feedback: []
   - key: B
     text: 閃邊避免接觸
     consequences:
     - target: race_info_module.position
       delta:
         add: -1
+    feedback: []
   cooldown: 2
 - id: ai_side_by_side_drag
   category: AI 互動事件
@@ -235,12 +249,14 @@
     - target: speed_module.speed
       delta:
         multiply: 0.97
+    feedback: []
   - key: B
     text: 強壓內線進彎
     consequences:
     - target: durability_module.durability
       delta:
         add: -5
+    feedback: []
   cooldown: 2
 - id: ai_block_pit_entry
   category: AI 互動事件
@@ -265,12 +281,14 @@
     - target: tire_module.tire_wear
       delta:
         add: 3
+    feedback: []
   - key: B
     text: 硬擠並排衝進站口
     consequences:
     - target: durability_module.durability
       delta:
         add: -4
+    feedback: []
   cooldown: 2
   mutex: pit
 - id: ai_staggered_defense
@@ -293,12 +311,14 @@
     - target: tire_module.tire_wear
       delta:
         add: 4
+    feedback: []
   - key: B
     text: 減速等待下一彎
     consequences:
     - target: race_info_module.position
       delta:
         add: -1
+    feedback: []
   cooldown: 2
 - id: ai_inside_dive_bomb
   category: AI 互動事件
@@ -324,12 +344,14 @@
     - target: handling_module.handling
       delta:
         multiply: 0.95
+    feedback: []
   - key: B
     text: 硬扛轉向
     consequences:
     - target: durability_module.durability
       delta:
         add: -6
+    feedback: []
   cooldown: 2
   mutex: ai_attack
 - id: ai_double_overtake_attempt
@@ -353,6 +375,7 @@
     - target: race_info_module.position
       delta:
         add: -1
+    feedback: []
   - key: B
     text: 全力往外線壓迫
     consequences:
@@ -362,6 +385,7 @@
     - target: durability_module.durability
       delta:
         add: -4
+    feedback: []
   cooldown: 2
   mutex: ai_attack
 - id: ai_drs_fight
@@ -382,6 +406,7 @@
     - target: speed_module.speed
       delta:
         multiply: 0.95
+    feedback: []
   - key: B
     text: 強切外線再貼上
     consequences:
@@ -391,6 +416,7 @@
     - target: tire_module.tire_wear
       delta:
         add: 2
+    feedback: []
   cooldown: 2
 - id: ai_blue_flag_standoff
   category: AI 互動事件
@@ -411,6 +437,7 @@
     - target: race_info_module.position
       delta:
         add: -1
+    feedback: []
   - key: B
     text: 直接外線強行超
     consequences:
@@ -420,6 +447,7 @@
     - target: tire_module.tire_wear
       delta:
         add: 4
+    feedback: []
   cooldown: 2
 - id: ai_fake_outside_entry
   category: AI 互動事件
@@ -441,12 +469,14 @@
     - target: handling_module.handling
       delta:
         multiply: 0.97
+    feedback: []
   - key: B
     text: 內線守到底
     consequences:
     - target: durability_module.durability
       delta:
         add: -5
+    feedback: []
   cooldown: 2
 - id: ai_lap_time_pressure
   category: AI 互動事件
@@ -463,6 +493,7 @@
   - key: A
     text: 維持節奏
     consequences: []
+    feedback: []
   - key: B
     text: 強行壓圈回應
     consequences:
@@ -472,6 +503,7 @@
     - target: tire_module.tire_wear
       delta:
         add: 5
+    feedback: []
   cooldown: 2
 - id: ai_ghost_line_overlap
   category: AI 互動事件
@@ -493,12 +525,14 @@
     - target: speed_module.speed
       delta:
         multiply: 0.95
+    feedback: []
   - key: B
     text: 照線持行不讓步
     consequences:
     - target: durability_module.durability
       delta:
         add: -3
+    feedback: []
   cooldown: 2
 - id: ai_overtake_and_cut
   category: AI 互動事件
@@ -520,6 +554,7 @@
     - target: brake_module.brake_efficiency
       delta:
         multiply: 0.95
+    feedback: []
   - key: B
     text: 不讓強壓回去
     consequences:
@@ -529,6 +564,7 @@
     - target: durability_module.durability
       delta:
         add: -4
+    feedback: []
   cooldown: 2
 - id: ai_fake_drs_defense
   category: AI 互動事件
@@ -545,6 +581,7 @@
   - key: A
     text: 保持安全距離
     consequences: []
+    feedback: []
   - key: B
     text: 提前加速開差
     consequences:
@@ -554,6 +591,7 @@
     - target: engine_module.engine_temp
       delta:
         add: 2
+    feedback: []
   cooldown: 2
 - id: ai_repeated_pressure_attack
   category: AI 互動事件
@@ -573,10 +611,12 @@
   - key: A
     text: 照計畫轉向
     consequences: []
+    feedback: []
   - key: B
     text: 讓道暫避
     consequences:
     - target: race_info_module.position
       delta:
         add: -1
+    feedback: []
   cooldown: 2

@@ -21,6 +21,7 @@
     - target: tire_module.tire_wear
       delta:
         add: -10
+    feedback: []
   - key: B
     text: 硬撐下去，等待自然恢復
     consequences:
@@ -30,6 +31,7 @@
     - target: speed_module.speed
       delta:
         multiply: 0.9
+    feedback: []
   cooldown: 2
   mutex: tire
 - id: mech_gearbox_jam
@@ -54,6 +56,7 @@
     - target: speed_module.speed
       delta:
         multiply: 0.95
+    feedback: []
   - key: B
     text: 嘗試以當前檔位撐過本圈
     consequences:
@@ -63,6 +66,7 @@
     - target: engine_module.engine_temp
       delta:
         add: 8
+    feedback: []
   cooldown: 2
 - id: mech_brake_fade
   category: 機械事件
@@ -87,6 +91,7 @@
     - target: brake_module.brake_efficiency
       delta:
         multiply: 0.95
+    feedback: []
   - key: B
     text: 照舊踩點進彎，拼一把！
     consequences:
@@ -96,6 +101,7 @@
     - target: handling_module.handling
       delta:
         multiply: 0.9
+    feedback: []
   cooldown: 2
   mutex: brake
 - id: mech_oil_pressure_drop
@@ -120,6 +126,7 @@
     - target: speed_module.speed
       delta:
         multiply: 0.92
+    feedback: []
   - key: B
     text: 忽略警示繼續推進
     consequences:
@@ -129,6 +136,7 @@
     - target: engine_module.engine_temp
       delta:
         add: 5
+    feedback: []
   cooldown: 2
 - id: mech_suspension_shift
   category: 機械事件
@@ -149,6 +157,7 @@
     - target: handling_module.handling
       delta:
         multiply: 0.95
+    feedback: []
   - key: B
     text: 不管繼續衝刺
     consequences:
@@ -158,6 +167,7 @@
     - target: handling_module.handling
       delta:
         multiply: 0.9
+    feedback: []
   cooldown: 2
 - id: mech_brake_fluid_boil
   category: 機械事件
@@ -178,6 +188,7 @@
     - target: brake_module.brake_efficiency
       delta:
         multiply: 0.9
+    feedback: []
   - key: B
     text: 硬踩到底冒風險
     consequences:
@@ -187,6 +198,7 @@
     - target: handling_module.handling
       delta:
         multiply: 0.92
+    feedback: []
   cooldown: 2
   mutex: brake
 - id: mech_cooling_system_strain
@@ -208,6 +220,7 @@
     - target: engine_module.engine_temp
       delta:
         add: 2
+    feedback: []
   - key: B
     text: 無視繼續高轉運轉
     consequences:
@@ -217,6 +230,7 @@
     - target: durability_module.durability
       delta:
         add: -4
+    feedback: []
   cooldown: 2
   mutex: engine
 - id: mech_wheel_hub_noise
@@ -238,6 +252,7 @@
     - target: speed_module.speed
       delta:
         multiply: 0.93
+    feedback: []
   - key: B
     text: 維持節奏強行推進
     consequences:
@@ -247,6 +262,7 @@
     - target: tire_module.tire_wear
       delta:
         add: 3
+    feedback: []
   cooldown: 2
 - id: mech_exhaust_unstable
   category: 機械事件
@@ -267,6 +283,7 @@
     - target: speed_module.speed
       delta:
         multiply: 0.9
+    feedback: []
   - key: B
     text: 維持速度不處理
     consequences:
@@ -276,6 +293,7 @@
     - target: engine_module.engine_temp
       delta:
         add: 2
+    feedback: []
   cooldown: 2
 - id: mech_transmission_clutch_slip
   category: 機械事件
@@ -296,6 +314,7 @@
     - target: acceleration_module.acceleration
       delta:
         multiply: 0.95
+    feedback: []
   - key: B
     text: 強踩油門爭時間
     consequences:
@@ -305,6 +324,7 @@
     - target: engine_module.engine_temp
       delta:
         add: 4
+    feedback: []
   cooldown: 2
 - id: mech_sensor_glitch
   category: 機械事件
@@ -324,12 +344,14 @@
     - target: handling_module.handling
       delta:
         multiply: 0.96
+    feedback: []
   - key: B
     text: 延後反應觀察數據
     consequences:
     - target: race_info_module.position
       delta:
         add: -1
+    feedback: []
   cooldown: 2
 - id: mech_engine_misfire
   category: 機械事件
@@ -353,6 +375,7 @@
     - target: acceleration_module.acceleration
       delta:
         multiply: 0.9
+    feedback: []
   - key: B
     text: 強行持續衝刺
     consequences:
@@ -362,6 +385,7 @@
     - target: speed_module.speed
       delta:
         multiply: 0.95
+    feedback: []
   cooldown: 2
   mutex: engine
 - id: mech_chassis_bottom_out
@@ -386,6 +410,7 @@
     - target: handling_module.handling
       delta:
         multiply: 0.97
+    feedback: []
   - key: B
     text: 維持低姿態壓迫力
     consequences:
@@ -395,6 +420,7 @@
     - target: brake_module.brake_efficiency
       delta:
         multiply: 0.93
+    feedback: []
   cooldown: 2
 - id: mech_turbo_lag_spike
   category: 機械事件
@@ -415,6 +441,7 @@
     - target: acceleration_module.acceleration
       delta:
         multiply: 0.92
+    feedback: []
   - key: B
     text: 強行高轉彌補延遲
     consequences:
@@ -424,6 +451,7 @@
     - target: durability_module.durability
       delta:
         add: -4
+    feedback: []
   cooldown: 2
 - id: mech_brake_pad_wear_increase
   category: 機械事件
@@ -444,12 +472,14 @@
     - target: brake_module.brake_efficiency
       delta:
         multiply: 0.95
+    feedback: []
   - key: B
     text: 照常剎車拼 lap
     consequences:
     - target: durability_module.durability
       delta:
         add: -3
+    feedback: []
   cooldown: 2
   mutex: brake
 - id: mech_suspension_misalignment
@@ -471,12 +501,14 @@
     - target: handling_module.handling
       delta:
         multiply: 0.93
+    feedback: []
   - key: B
     text: 不理，硬壓彎線
     consequences:
     - target: durability_module.durability
       delta:
         add: -5
+    feedback: []
   cooldown: 2
 - id: mech_ecu_soft_reset
   category: 機械事件
@@ -497,12 +529,14 @@
     - target: speed_module.speed
       delta:
         multiply: 0.85
+    feedback: []
   - key: B
     text: 強制切回手動模式
     consequences:
     - target: handling_module.handling
       delta:
         multiply: 0.95
+    feedback: []
   cooldown: 2
 - id: mech_airflow_sensor_fault
   category: 機械事件
@@ -523,6 +557,7 @@
     - target: engine_module.engine_temp
       delta:
         add: 2
+    feedback: []
   - key: B
     text: 保持推進力道
     consequences:
@@ -532,6 +567,7 @@
     - target: durability_module.durability
       delta:
         add: -4
+    feedback: []
   cooldown: 2
 - id: mech_rear_diffuser_damage
   category: 機械事件
@@ -555,12 +591,14 @@
     - target: handling_module.handling
       delta:
         multiply: 0.96
+    feedback: []
   - key: B
     text: 不顧後果持續衝刺
     consequences:
     - target: durability_module.durability
       delta:
         add: -6
+    feedback: []
   cooldown: 2
 - id: mech_drive_shaft_overheat
   category: 機械事件
@@ -581,6 +619,7 @@
     - target: acceleration_module.acceleration
       delta:
         multiply: 0.94
+    feedback: []
   - key: B
     text: 高轉強壓繼續衝
     consequences:
@@ -590,4 +629,5 @@
     - target: engine_module.engine_temp
       delta:
         add: 3
+    feedback: []
   cooldown: 2

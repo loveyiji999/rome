@@ -17,12 +17,14 @@
     - target: durability_module.durability
       delta:
         add: 2
+    feedback: []
   - key: B
     text: 忽略警告
     consequences:
     - target: status_flags
       delta:
         add_flag: chain_warning_1
+    feedback: []
 - id: mech_chain_effect_1
   category: 機械事件
   name: 模組1 - 故障發作
@@ -47,6 +49,7 @@
     - target: status_flags
       delta:
         remove_flag: chain_warning_1
+    feedback: []
   - key: B
     text: 強撐推進略過區段
     consequences:
@@ -56,6 +59,7 @@
     - target: status_flags
       delta:
         remove_flag: chain_warning_1
+    feedback: []
 - id: mech_chain_warn_2
   category: 機械事件
   name: 模組2 - 異常預警
@@ -75,12 +79,14 @@
     - target: durability_module.durability
       delta:
         add: 2
+    feedback: []
   - key: B
     text: 忽略警告
     consequences:
     - target: status_flags
       delta:
         add_flag: chain_warning_2
+    feedback: []
 - id: mech_chain_effect_2
   category: 機械事件
   name: 模組2 - 故障發作
@@ -105,6 +111,7 @@
     - target: status_flags
       delta:
         remove_flag: chain_warning_2
+    feedback: []
   - key: B
     text: 強撐推進略過區段
     consequences:
@@ -114,6 +121,7 @@
     - target: status_flags
       delta:
         remove_flag: chain_warning_2
+    feedback: []
 - id: mech_chain_warn_3
   category: 機械事件
   name: 模組3 - 異常預警
@@ -133,12 +141,14 @@
     - target: durability_module.durability
       delta:
         add: 2
+    feedback: []
   - key: B
     text: 忽略警告
     consequences:
     - target: status_flags
       delta:
         add_flag: chain_warning_3
+    feedback: []
 - id: mech_chain_effect_3
   category: 機械事件
   name: 模組3 - 故障發作
@@ -163,6 +173,7 @@
     - target: status_flags
       delta:
         remove_flag: chain_warning_3
+    feedback: []
   - key: B
     text: 強撐推進略過區段
     consequences:
@@ -172,6 +183,7 @@
     - target: status_flags
       delta:
         remove_flag: chain_warning_3
+    feedback: []
 - id: mech_chain_warn_4
   category: 機械事件
   name: 模組4 - 異常預警
@@ -191,12 +203,14 @@
     - target: durability_module.durability
       delta:
         add: 2
+    feedback: []
   - key: B
     text: 忽略警告
     consequences:
     - target: status_flags
       delta:
         add_flag: chain_warning_4
+    feedback: []
 - id: mech_chain_effect_4
   category: 機械事件
   name: 模組4 - 故障發作
@@ -221,6 +235,7 @@
     - target: status_flags
       delta:
         remove_flag: chain_warning_4
+    feedback: []
   - key: B
     text: 強撐推進略過區段
     consequences:
@@ -230,6 +245,7 @@
     - target: status_flags
       delta:
         remove_flag: chain_warning_4
+    feedback: []
 - id: mech_chain_warn_5
   category: 機械事件
   name: 模組5 - 異常預警
@@ -249,12 +265,14 @@
     - target: durability_module.durability
       delta:
         add: 2
+    feedback: []
   - key: B
     text: 忽略警告
     consequences:
     - target: status_flags
       delta:
         add_flag: chain_warning_5
+    feedback: []
 - id: mech_chain_effect_5
   category: 機械事件
   name: 模組5 - 故障發作
@@ -279,6 +297,7 @@
     - target: status_flags
       delta:
         remove_flag: chain_warning_5
+    feedback: []
   - key: B
     text: 強撐推進略過區段
     consequences:
@@ -288,6 +307,7 @@
     - target: status_flags
       delta:
         remove_flag: chain_warning_5
+    feedback: []
 - id: mech_chain_warn_11
   category: 機械事件
   name: 模組11 - 狀態異常預警
@@ -307,12 +327,14 @@
     - target: engine_module.cooling_efficiency
       delta:
         multiply: 1.02
+    feedback: []
   - key: B
     text: 忽略提示繼續駕駛
     consequences:
     - target: status_flags
       delta:
         add_flag: chain_warning_11
+    feedback: []
 - id: mech_chain_effect_11
   category: 機械事件
   name: 模組11 - 故障擴大
@@ -337,6 +359,7 @@
     - target: status_flags
       delta:
         remove_flag: chain_warning_11
+    feedback: []
   - key: B
     text: 強撐操控全速硬過
     consequences:
@@ -346,6 +369,7 @@
     - target: status_flags
       delta:
         remove_flag: chain_warning_11
+    feedback: []
 - id: mech_chain_warn_12
   category: 機械事件
   name: 模組12 - 狀態異常預警
@@ -365,12 +389,14 @@
     - target: engine_module.cooling_efficiency
       delta:
         multiply: 1.02
+    feedback: []
   - key: B
     text: 忽略提示繼續駕駛
     consequences:
     - target: status_flags
       delta:
         add_flag: chain_warning_12
+    feedback: []
 - id: mech_chain_effect_12
   category: 機械事件
   name: 模組12 - 故障擴大
@@ -395,6 +421,7 @@
     - target: status_flags
       delta:
         remove_flag: chain_warning_12
+    feedback: []
   - key: B
     text: 強撐操控全速硬過
     consequences:
@@ -404,6 +431,7 @@
     - target: status_flags
       delta:
         remove_flag: chain_warning_12
+    feedback: []
 - id: mech_chain_warn_13
   category: 機械事件
   name: 模組13 - 狀態異常預警
@@ -423,12 +451,14 @@
     - target: engine_module.cooling_efficiency
       delta:
         multiply: 1.02
+    feedback: []
   - key: B
     text: 忽略提示繼續駕駛
     consequences:
     - target: status_flags
       delta:
         add_flag: chain_warning_13
+    feedback: []
 - id: mech_chain_effect_13
   category: 機械事件
   name: 模組13 - 故障擴大
@@ -453,6 +483,7 @@
     - target: status_flags
       delta:
         remove_flag: chain_warning_13
+    feedback: []
   - key: B
     text: 強撐操控全速硬過
     consequences:
@@ -462,6 +493,7 @@
     - target: status_flags
       delta:
         remove_flag: chain_warning_13
+    feedback: []
 - id: mech_chain_warn_14
   category: 機械事件
   name: 模組14 - 狀態異常預警
@@ -481,12 +513,14 @@
     - target: engine_module.cooling_efficiency
       delta:
         multiply: 1.02
+    feedback: []
   - key: B
     text: 忽略提示繼續駕駛
     consequences:
     - target: status_flags
       delta:
         add_flag: chain_warning_14
+    feedback: []
 - id: mech_chain_effect_14
   category: 機械事件
   name: 模組14 - 故障擴大
@@ -511,6 +545,7 @@
     - target: status_flags
       delta:
         remove_flag: chain_warning_14
+    feedback: []
   - key: B
     text: 強撐操控全速硬過
     consequences:
@@ -520,6 +555,7 @@
     - target: status_flags
       delta:
         remove_flag: chain_warning_14
+    feedback: []
 - id: mech_chain_warn_15
   category: 機械事件
   name: 模組15 - 狀態異常預警
@@ -539,12 +575,14 @@
     - target: engine_module.cooling_efficiency
       delta:
         multiply: 1.02
+    feedback: []
   - key: B
     text: 忽略提示繼續駕駛
     consequences:
     - target: status_flags
       delta:
         add_flag: chain_warning_15
+    feedback: []
 - id: mech_chain_effect_15
   category: 機械事件
   name: 模組15 - 故障擴大
@@ -569,6 +607,7 @@
     - target: status_flags
       delta:
         remove_flag: chain_warning_15
+    feedback: []
   - key: B
     text: 強撐操控全速硬過
     consequences:
@@ -578,3 +617,4 @@
     - target: status_flags
       delta:
         remove_flag: chain_warning_15
+    feedback: []

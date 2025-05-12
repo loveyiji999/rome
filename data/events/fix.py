@@ -1,29 +1,31 @@
 import os
 import yaml
 
-# 所有事件的資料夾
+# 資料夾路徑
 EVENT_DIR = "data/events"
 
-# 預設 cooldown 數值
-DEFAULT_COOLDOWN = 2
-
-def add_cooldown_to_events():
+def add_empty_feedback_to_events():
     for fname in os.listdir(EVENT_DIR):
-        if fname.endswith(".yaml"):
-            full_path = os.path.join(EVENT_DIR, fname)
-            with open(full_path, "r", encoding="utf-8") as f:
-                events = yaml.safe_load(f)
+        if not fname.endswith(".yaml"):
+            continue
+        file_path = os.path.join(EVENT_DIR, fname)
+        with open(file_path, "r", encoding="utf-8") as f:
+            events = yaml.safe_load(f) or []
 
-            modified = False
+        modified = False
+        # 確保 events 是列表
+        if isinstance(events, list):
             for event in events:
-                if "cooldown" not in event:
-                    event["cooldown"] = DEFAULT_COOLDOWN
-                    modified = True
+                options = event.get("options", [])
+                for opt in options:
+                    if "feedback" not in opt:
+                        opt["feedback"] = []
+                        modified = True
 
-            if modified:
-                with open(full_path, "w", encoding="utf-8") as f:
-                    yaml.dump(events, f, allow_unicode=True, sort_keys=False)
-                print(f"已加入 cooldown 至：{fname}")
+        if modified:
+            with open(file_path, "w", encoding="utf-8") as f:
+                yaml.dump(events, f, allow_unicode=True, sort_keys=False)
+            print(f"已為 {fname} 中的選項加入空的 feedback 欄位")
 
 if __name__ == "__main__":
-    add_cooldown_to_events()
+    add_empty_feedback_to_events()

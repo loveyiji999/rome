@@ -23,6 +23,7 @@
     - target: fuel_module.fuel
       delta:
         add: 3
+    feedback: []
   - key: B
     text: 進 Pit 補給＋修復
     consequences:
@@ -32,6 +33,7 @@
     - target: durability_module.durability
       delta:
         add: 10
+    feedback: []
   cooldown: 2
 - id: strat_fuel_strategy_update
   category: 策略事件
@@ -57,6 +59,7 @@
     - target: race_info_module.position
       delta:
         add: -1
+    feedback: []
   - key: B
     text: 再撐一圈，賭個天降奇蹟
     consequences:
@@ -66,6 +69,7 @@
     - target: durability_module.durability
       delta:
         add: -3
+    feedback: []
   cooldown: 2
 - id: strat_tire_strategy_call
   category: 策略事件
@@ -91,6 +95,7 @@
     - target: handling_module.handling
       delta:
         multiply: 1.1
+    feedback: []
   - key: B
     text: 繼續拼一波，延後進站
     consequences:
@@ -100,6 +105,7 @@
     - target: speed_module.speed
       delta:
         multiply: 1.05
+    feedback: []
   cooldown: 2
 - id: strat_early_pit_window
   category: 策略事件
@@ -125,6 +131,7 @@
     - target: race_info_module.position
       delta:
         add: -1
+    feedback: []
   - key: B
     text: 再撐兩圈觀察
     consequences:
@@ -134,6 +141,7 @@
     - target: durability_module.durability
       delta:
         add: -3
+    feedback: []
   cooldown: 2
   mutex: pit
 - id: strat_fuel_mode_change
@@ -160,6 +168,7 @@
     - target: speed_module.speed
       delta:
         multiply: 0.95
+    feedback: []
   - key: B
     text: 維持性能推進
     consequences:
@@ -169,6 +178,7 @@
     - target: engine_module.engine_temp
       delta:
         add: 2
+    feedback: []
   cooldown: 2
   mutex: strategy_slot
 - id: strat_tire_compound_adjust
@@ -193,6 +203,7 @@
     - target: handling_module.handling
       delta:
         multiply: 1.05
+    feedback: []
   - key: B
     text: 硬胎長壽命壓後段
     consequences:
@@ -202,6 +213,7 @@
     - target: tire_module.grip_coefficient
       delta:
         multiply: 0.95
+    feedback: []
   cooldown: 2
   mutex: tire
 - id: strat_yellow_flag_response
@@ -223,6 +235,7 @@
     - target: speed_module.speed
       delta:
         multiply: 0.85
+    feedback: []
   - key: B
     text: 不減速強行搶位
     consequences:
@@ -232,6 +245,7 @@
     - target: race_info_module.position
       delta:
         add: -1
+    feedback: []
   cooldown: 2
 - id: strat_drs_available
   category: 策略事件
@@ -254,9 +268,11 @@
     - target: fuel_module.fuel
       delta:
         add: -1
+    feedback: []
   - key: B
     text: 觀察 AI 騷擾再啟
     consequences: []
+    feedback: []
   cooldown: 2
   mutex: strategy_slot
 - id: strat_expected_rain_change
@@ -281,12 +297,14 @@
     - target: tire_module.grip_coefficient
       delta:
         multiply: 1.05
+    feedback: []
   - key: B
     text: 維持乾胎冒險壓雨段
     consequences:
     - target: durability_module.durability
       delta:
         add: -5
+    feedback: []
   cooldown: 2
 - id: strat_team_gap_analysis
   category: 策略事件
@@ -309,6 +327,7 @@
     - target: race_info_module.position
       delta:
         add: -1
+    feedback: []
   - key: B
     text: 立刻進站切胎
     consequences:
@@ -318,6 +337,7 @@
     - target: durability_module.durability
       delta:
         add: 5
+    feedback: []
   cooldown: 2
 - id: strat_virtual_safety_car
   category: 策略事件
@@ -337,6 +357,7 @@
     - target: speed_module.speed
       delta:
         set: 80
+    feedback: []
   - key: B
     text: 偷偷微加速靠近對手
     consequences:
@@ -346,6 +367,7 @@
     - target: durability_module.durability
       delta:
         add: -4
+    feedback: []
   cooldown: 2
 - id: strat_push_to_pass_window
   category: 策略事件
@@ -369,9 +391,11 @@
     - target: fuel_module.fuel
       delta:
         add: -2
+    feedback: []
   - key: B
     text: 延後使用壓尾段
     consequences: []
+    feedback: []
   cooldown: 2
   mutex: strategy_slot
 - id: strat_penalty_notice
@@ -395,12 +419,14 @@
     - target: race_info_module.position
       delta:
         add: -2
+    feedback: []
   - key: B
     text: 延後執行等時機
     consequences:
     - target: durability_module.durability
       delta:
         add: -3
+    feedback: []
   cooldown: 2
 - id: strat_tire_temp_monitoring
   category: 策略事件
@@ -424,6 +450,7 @@
     - target: tire_module.tire_wear
       delta:
         add: 2
+    feedback: []
   - key: B
     text: 繼續壓線搏速度
     consequences:
@@ -433,6 +460,7 @@
     - target: durability_module.durability
       delta:
         add: -3
+    feedback: []
   cooldown: 2
   mutex: tire
 - id: strat_gap_to_leader_notice
@@ -456,9 +484,11 @@
     - target: speed_module.speed
       delta:
         multiply: 1.05
+    feedback: []
   - key: B
     text: 穩定節奏待錯誤
     consequences: []
+    feedback: []
   cooldown: 2
 - id: strat_defensive_positioning
   category: 策略事件
@@ -480,6 +510,7 @@
     - target: handling_module.handling
       delta:
         multiply: 0.95
+    feedback: []
   - key: B
     text: 冒險轉向搶更佳角度
     consequences:
@@ -489,6 +520,7 @@
     - target: race_info_module.position
       delta:
         add: 1
+    feedback: []
   cooldown: 2
 - id: strat_risk_level_update
   category: 策略事件
@@ -506,12 +538,14 @@
   - key: A
     text: 降低進攻頻率
     consequences: []
+    feedback: []
   - key: B
     text: 無視風險繼續壓制
     consequences:
     - target: durability_module.durability
       delta:
         add: -4
+    feedback: []
   cooldown: 2
 - id: strat_battery_save_mode
   category: 策略事件
@@ -531,12 +565,14 @@
     - target: speed_module.speed
       delta:
         multiply: 0.95
+    feedback: []
   - key: B
     text: 保留全功率繼續推進
     consequences:
     - target: durability_module.durability
       delta:
         add: -2
+    feedback: []
   cooldown: 2
   mutex: strategy_slot
 - id: strat_final_lap_push
@@ -562,9 +598,11 @@
     - target: engine_module.engine_temp
       delta:
         add: 5
+    feedback: []
   - key: B
     text: 穩穩完賽
     consequences: []
+    feedback: []
   cooldown: 2
 - id: strat_team_overtake_permission
   category: 策略事件
@@ -587,12 +625,14 @@
     - target: race_info_module.position
       delta:
         add: -1
+    feedback: []
   - key: B
     text: 拒絕換位
     consequences:
     - target: durability_module.durability
       delta:
         add: -2
+    feedback: []
   cooldown: 2
 - id: strat_brake_temp_management
   category: 策略事件
@@ -613,12 +653,14 @@
     - target: brake_module.brake_efficiency
       delta:
         multiply: 0.93
+    feedback: []
   - key: B
     text: 無視數據維持速度
     consequences:
     - target: durability_module.durability
       delta:
         add: -4
+    feedback: []
   cooldown: 2
 - id: strat_sector_time_alert
   category: 策略事件
@@ -641,9 +683,11 @@
     - target: fuel_module.fuel
       delta:
         add: -2
+    feedback: []
   - key: B
     text: 維持當前節奏
     consequences: []
+    feedback: []
   cooldown: 2
 - id: strat_pit_stop_delay_response
   category: 策略事件
@@ -666,8 +710,10 @@
     - target: speed_module.speed
       delta:
         multiply: 1.07
+    feedback: []
   - key: B
     text: 節奏穩住等機會
     consequences: []
+    feedback: []
   cooldown: 2
   mutex: pit
