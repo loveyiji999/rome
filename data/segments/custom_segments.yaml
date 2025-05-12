@@ -1,0 +1,8 @@
+- id: S1_custom1
+  title: low_speed_stright
+  track_type: S1
+  attributes:
+    length: 150.0
+    base_event_chance: 0.03
+    recommended_speed: 280.0
+    estimated_avg_time: 12.0

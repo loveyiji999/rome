@@ -1,0 +1,14 @@
+name: TESTMAP001
+author: 官方測試地圖
+lap_count: 3
+segments:
+- id: S1
+  title: ''
+- id: UP1
+  title: ''
+- id: RP1
+  title: ''
+- id: WS1
+  title: ''
+- id: PE1
+  title: ''
