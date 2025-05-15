@@ -27,6 +27,12 @@ class Event:
                 return False
 
         prob = self.trigger.get("probability", 0.0)
+        # 動態機率加成（可選）
+        for dp in self.trigger.get("dynamic_probability", []):
+            if evaluate_condition(dp, car_state, context):
+                prob += dp.get("bonus", 0.0)
+        # 限制最大不超過 1.0
+        prob = min(prob, 1.0)
         return random_obj.random() < prob
 
     def apply_option(self, option_key, car_state):

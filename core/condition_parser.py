@@ -4,7 +4,19 @@ def evaluate_condition(cond: dict, car_state, context: dict) -> bool:
 
     if name == "Always":
         return True
+    
+    if name == "StateAbove":
+        state = params["state"]            # e.g. "tire_module.tire_wear"
+        threshold = params["threshold"]    # e.g. 80
+        value = car_state.get(state)
+        return value is not None and value > threshold
 
+    if name == "StateBelow":
+        state = params["state"]
+        threshold = params["threshold"]
+        value = car_state.get(state)
+        return value is not None and value < threshold
+    
     elif name == "FuelBelow":
         return car_state.get("fuel_module.fuel") < params.get("threshold", 20)
 

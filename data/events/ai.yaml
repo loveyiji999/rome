@@ -5,13 +5,20 @@
   - AI 車手在彎道內部封死內線，迫使你只能從外側繞行。
   trigger:
     segment_type:
-    - Medium Corner
-    - Hairpin Return
+      - Medium Corner 
+      - Hairpin Return
     conditions:
-    - name: Expression
-      params:
-        expr: context['distance_to_ai'] < 2.0
+      - name: Expression
+        params:
+          expr: context['distance_to_ai'] < 2.0 
     probability: 1.0
+    dynamic_probability:
+      # 當操控性低於 0.8 時，增加封鎖機率
+      - name: StateBelow
+        params:
+          state: handling_module.handling
+          threshold: 0.8
+        bonus: 0.2
   options:
   - key: A
     text: 硬守內線，保持路權
@@ -41,6 +48,7 @@
     - "外線表現穩健成功罷過，然而內側最佳機會已經錯失。"
   cooldown: 2
   mutex: ai_attack
+
 - id: ai_draft_break
   category: AI 互動事件
   name: 尾流切斷
@@ -48,11 +56,18 @@
   - 前方 AI 車手突然減速，讓你瞬間失去尾流加速優勢。
   trigger:
     segment_type:
-    - Long Straight
-    - Straight
+      - Long Straight
+      - Straight
     conditions:
-    - name: InSlipstream
+      - name: InSlipstream
     probability: 0.8
+    dynamic_probability:
+      # 當速度超過 200 km/h 時，額外 +10% 機率
+      - name: StateAbove
+        params:
+          state: speed_module.speed
+          threshold: 200
+        bonus: 0.10
   options:
   - key: A
     text: 保持車距，等待時機
@@ -78,20 +93,28 @@
     - "突然轉向成功切入，讓 AI 車手措手不及。"
     - "迅速切換跑道，你搶回了主動權，不留遺憾。"
   cooldown: 2
+
 - id: ai_late_brake_challenge
   category: AI 互動事件
   name: 急剎逼近
   description:
   - AI 車手在進彎前最後一刻剎車，造成你反應不及，可能衝太深。
   trigger:
-    segment_type:
-    - Slow Corner
-    - Chicane
+    segment_type: 
+      - Slow Corner
+      - Chicane
     conditions:
-    - name: Expression
-      params:
-        expr: context['distance_to_ai'] < 3.0
+      - name: Expression
+        params:
+          expr: context['distance_to_ai'] < 3.0 
     probability: 0.6
+    dynamic_probability:
+      # 當煞車效率低於 70% 時，額外 +20% 機率
+      - name: StateBelow
+        params:
+          state: brake_module.brake_efficiency
+          threshold: 0.7
+        bonus: 0.2
   options:
   - key: A
     text: 提前跟剎，保守處理
@@ -114,6 +137,7 @@
         add: -4
     feedback: []
   cooldown: 2
+
 - id: ai_slipstream_steal
   category: AI 互動事件
   name: 尾流搶奪
@@ -121,11 +145,18 @@
   - 你剛進入尾流區域，AI 車手突然壓進來，切走你原本的位置與加速機會。
   trigger:
     segment_type:
-    - Long Straight
-    - Straight
+      - Long Straight
+      - Straight
     conditions:
-    - name: InSlipstream
+      - name: InSlipstream
     probability: 0.9
+    dynamic_probability:
+      # 當速度超過 200 km/h 時，額外 +15% 機率
+      - name: StateAbove
+        params:
+          state: speed_module.speed
+          threshold: 200
+        bonus: 0.15
   options:
   - key: A
     text: 改變路線重新貼上
@@ -218,13 +249,20 @@
   - AI 車手突然在非煞車區快速減速，試圖讓你誤判或追撞。
   trigger:
     segment_type:
-    - Straight
-    - Chicane
+      - Medium Corner
+      - Slow Corner
     conditions:
-    - name: Expression
-      params:
-        expr: context['distance_to_ai'] < 2.0
-    probability: 0.65
+      - name: Expression
+        params: 
+          expr: context['distance_to_ai'] < 2.5 
+    probability: 0.5
+    dynamic_probability:
+      # 當煞車效率低於 60% 時，額外 +25% 機率
+      - name: StateBelow
+        params:
+          state: brake_module.brake_efficiency
+          threshold: 0.6
+        bonus: 0.25
   options:
   - key: A
     text: 急剎反應
@@ -248,12 +286,20 @@
   - AI 車與你平行長時間爭奪同一路線，迫使你延後超車。
   trigger:
     segment_type:
-    - Long Straight
+      - Straight
+      - Medium Corner
     conditions:
-    - name: Expression
-      params:
-        expr: context['distance_to_ai'] < 1.5
-    probability: 0.85
+      - name: Expression
+        params: 
+          expr: "context['gap_to_trailer'] < 1.0"
+    probability: 0.5
+    dynamic_probability:
+      # 當與後車距離小於 1.0m 時，壓迫機率額外提高
+      - name: StateBelow
+        params:
+          state: race_info_module.gap_to_trailer
+          threshold: 1.0
+        bonus: 0.2
   options:
   - key: A
     text: 延後超車等時機
@@ -339,13 +385,20 @@
   - AI 在你煞車準備時突然從內線切入超車，打亂你的入彎節奏。
   trigger:
     segment_type:
-    - Hairpin Return
-    - Slow Corner
+      - Slow Corner
+      - Medium Corner
     conditions:
-    - name: Expression
-      params:
-        expr: context['distance_to_ai'] < 2.5
-    probability: 0.7
+      - name: Expression
+        params: 
+          expr: context['distance_to_ai'] < 2.0 
+    probability: 0.6
+    dynamic_probability:
+      # 當你進彎速度超過 150 km/h 時，提高突襲機率
+      - name: StateAbove
+        params:
+          state: speed_module.speed
+          threshold: 150
+        bonus: 0.2
   options:
   - key: A
     text: 提早剎車保命
@@ -373,13 +426,21 @@
   - 兩輛 AI 同時左右包夾你，你必須臨機應變選擇閃避方向。
   trigger:
     segment_type:
-    - Straight
-    - Chicane
+      - Medium Corner 
+      - Hairpin Return
+      - Chicane
     conditions:
-    - name: Expression
-      params:
-        expr: context['distance_to_ai'] < 1.5
-    probability: 0.65
+      - name: Expression
+        params:
+          expr: context['num_ai_adjacent'] >= 2 
+    probability: 0.7
+    dynamic_probability:
+      # 當與領先車差距小於 1.5 秒時，加重夾擊機率
+      - name: StateBelow
+        params:
+          state: race_info_module.gap_to_leader
+          threshold: 1.5
+        bonus: 0.25
   options:
   - key: A
     text: 守內線讓外側 AI 過
@@ -497,10 +558,18 @@
   - AI 車手上圈創下全場最佳時間，施加節奏與心理壓力。
   trigger:
     segment_type:
-    - Any
+      - Long Straight
+      - Straight
+      - Medium Corner
     conditions:
-    - name: Always
-    probability: 0.6
+      - name: Always
+    probability: 0.4
+    dynamic_probability:
+      # 若上次圈速低於目標圈速 5%，額外 +30% 觸發機率
+      - name: Expression
+        params:
+          expr: context['last_lap_time'] > context['target_lap_time'] * 1.05
+        bonus: 0.3
   options:
   - key: A
     text: 維持節奏

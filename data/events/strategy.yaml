@@ -78,8 +78,7 @@
   - 根據當前磨損與溫度，考慮是否更換輪胎配方。
   trigger:
     segment_type:
-    - Slow Corner
-    - Chicane
+    - Pit Entry
     conditions:
     - name: Expression
       params:
@@ -114,8 +113,7 @@
   - 根據目前胎溫與磨損數據，車隊建議提前進站換胎。
   trigger:
     segment_type:
-    - Straight
-    - Uphill
+    - Pit Entry
     conditions:
     - name: Expression
       params:
@@ -282,8 +280,7 @@
   - 根據預報，5 分鐘內可能降雨，是否提前改成雨胎？
   trigger:
     segment_type:
-    - Straight
-    - Chicane
+    - Pit Entry
     conditions:
     - name: Always
     probability: 0.7
