@@ -22,7 +22,10 @@
     - target: durability_module.durability
       delta:
         add: -2
-    feedback: []
+    feedback: 
+      - "你堅定地保持內線，成功阻擋對手，但因此犧牲了一些速度。"
+      - "你拼盡全力鎖住內線，對手只能繞行，你的名次得以保住。"
+      - "你緊握方向盤死守內線，雖然穩固，但車輪壓力急遽增大。"
   - key: B
     text: 改走外線，風險較低
     consequences:
@@ -32,7 +35,10 @@
     - target: race_info_module.position
       delta:
         add: -1
-    feedback: []
+    feedback: 
+    - "你果斷改走外線，雖避開碰撞，卻失去了些微的時間。"
+    - "你靈活地繞出內線，安全通過，但被對手略微超前。"
+    - "外線表現穩健成功罷過，然而內側最佳機會已經錯失。"
   cooldown: 2
   mutex: ai_attack
 - id: ai_draft_break
@@ -54,7 +60,10 @@
     - target: speed_module.speed
       delta:
         multiply: 0.95
-    feedback: []
+    feedback: 
+    - "你保持車距耐心守候，等待下個時機發動超車。"
+    - "你穩住呼吸不貿進，儲存能量準備下一波攻勢。"
+    - "保持冷靜使你免於失速，但尾流優勢也已消失。"
   - key: B
     text: 立刻換線反超
     consequences:
@@ -64,7 +73,10 @@
     - target: race_info_module.position
       delta:
         add: 1
-    feedback: []
+    feedback: 
+    - "你果斷換線，一舉超過，氣勢如虹！"
+    - "突然轉向成功切入，讓 AI 車手措手不及。"
+    - "迅速切換跑道，你搶回了主動權，不留遺憾。"
   cooldown: 2
 - id: ai_late_brake_challenge
   category: AI 互動事件
