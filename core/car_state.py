@@ -1,6 +1,5 @@
 import yaml
 import os
-
 class CarState:
     def __init__(self, schema_path="car_state_schema.yaml", limits_path="car_state_limits.yaml"):
         with open(schema_path, 'r', encoding='utf-8') as f:

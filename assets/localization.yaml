@@ -1,0 +1,60 @@
+zh:
+  car_attributes:
+    speed_module:
+      current_speed: "當前速度"
+      top_speed: "最高極速"
+      delta_speed_turn: "每回合速度變化"
+      acceleration: "加速度"
+      throttle_sensitivity: "油門靈敏度"
+      launch_acceleration: "起步加速"
+      acceleration_peak: "加速飽和點"
+
+    handling_module:
+      handling: "操控性"
+      lateral_grip: "橫向抓地力"
+      steering_response: "轉向反應時間"
+      low_high_speed_balance: "低速／高速平衡"
+
+    brake_module:
+      brake_efficiency: "煞車效能"
+      max_braking_force: "最大煞車力"
+      brake_fade_rate: "煞車熱衰減"
+      brake_wear: "煞車片磨損"
+
+    fuel_module:
+      fuel_level: "當前油量"
+      consumption_rate: "每回合耗油率"
+      pit_stop_threshold: "最低進站臨界值"
+
+    engine_module:
+      current_temp: "實際溫度"
+      cooling_efficiency: "冷卻效率"
+      overheat_threshold: "過熱警戒值"
+
+    tire_module:
+      wear_level: "磨損度"
+      surface_temp: "表面溫度"
+      grip_coefficient: "抓地係數"
+      tire_pressure: "氣壓"
+
+    durability_module:
+      chassis_health: "底盤耐久"
+      mechanical_integrity: "機械部件狀態"
+      crash_tolerance: "碰撞抗性"
+
+    race_info_module:
+      current_position: "當前排名"
+      gap_to_leader_trailer: "與前後車距"
+      laps_completed: "已完成圈數"
+
+    aero_module:
+      drag_coefficient_cd: "阻力係數"
+      downforce: "下壓力值"
+      slipstream_bonus_active: "尾流加成狀態"
+
+    fuel_efficiency_module:
+      base_fuel_economy: "基礎燃油經濟"
+      current_consumption_rate: "實際燃料消耗率"
+      fuel_per_lap: "單圈燃油消耗"
+      range_remaining: "可行駛距離"
+      economy_rating: "燃油經濟評分"
