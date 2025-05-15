@@ -1,6 +1,6 @@
 - id: mech_chain_warn_1
   category: 機械事件
-  name: 模組1 - 異常預警
+  name: 鏈條張力異常預警
   description:
   - 系統模組 1 回報異常狀況，可能導致進一步故障。
   trigger:

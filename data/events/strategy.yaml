@@ -186,8 +186,7 @@
   - 根據預測氣溫與賽道磨耗，建議改換中性胎或硬胎以應對後半程。
   trigger:
     segment_type:
-    - Slow Corner
-    - Chicane
+    - Pit Entry
     conditions:
     - name: Always
     probability: 0.85
@@ -714,3 +713,62 @@
     feedback: []
   cooldown: 2
   mutex: pit
+- id: strategy_suspension_tune
+  category: 策略事件
+  name: 懸吊設定調整
+  description:
+    - "你可以選擇調整懸吊硬度，以平衡顛簸吸收與操控性。"
+  trigger:
+    segment_type:
+      - Rough Patch
+    conditions:
+      - name: Always
+    probability: 0.3
+  options:
+    - key: A
+      text: 設定偏軟，強化吸震
+      consequences:
+        - target: handling_module.handling
+          delta: { multiply: 0.9 }
+        - target: durability_module.durability
+          delta: { add: -2 }
+      feedback: []
+    - key: B
+      text: 設定偏硬，提高反應
+      consequences:
+        - target: handling_module.handling
+          delta: { multiply: 1.1 }
+        - target: tire_module.tire_wear
+          delta: { add: 3 }
+      feedback: []
+  cooldown: 2
+
+- id: strategy_line_selection
+  category: 策略事件
+  name: 行駛路線選擇
+  description:
+    - "顛簸段可選擇直接通過最短線，或繞到平坦側路。"
+  trigger:
+    segment_type:
+      - Rough Patch
+    conditions:
+      - name: Always
+    probability: 0.25
+  options:
+    - key: A
+      text: 直線通過，最短路徑
+      consequences:
+        - target: speed_module.speed
+          delta: { multiply: 1.05 }
+        - target: durability_module.durability
+          delta: { add: -4 }
+      feedback: []
+    - key: B
+      text: 繞側路，減少顛簸
+      consequences:
+        - target: speed_module.speed
+          delta: { multiply: 0.9 }
+        - target: handling_module.handling
+          delta: { multiply: 0.95 }
+      feedback: []
+  cooldown: 2

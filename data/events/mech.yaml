@@ -631,3 +631,31 @@
         add: 3
     feedback: []
   cooldown: 2
+- id: mech_suspension_strain
+  category: 機械事件
+  name: 懸吊系統超負荷
+  description:
+    - "連續顛簸讓懸吊系統承受極大壓力，可能發生損傷。"
+  trigger:
+    segment_type:
+      - Rough Patch
+    conditions:
+      - name: StateAbove
+        params:
+          state: tire_module.tire_wear
+          threshold: 50
+    probability: 0.15
+  options:
+    - key: A
+      text: 進站檢修懸吊
+      consequences:
+        - target: race_info_module.position
+          delta: { add: -1 }
+      feedback: []
+    - key: B
+      text: 硬撐繼續比賽
+      consequences:
+        - target: durability_module.durability
+          delta: { add: -8 }
+      feedback: []
+  cooldown: 3

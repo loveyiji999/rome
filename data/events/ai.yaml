@@ -701,3 +701,32 @@
         add: -1
     feedback: []
   cooldown: 2
+- id: ai_erratic_recovery
+  category: AI 互動事件
+  name: AI 不穩定路線補償
+  description:
+    - "AI 車手因顛簸偏離線路，突然修正導致你判斷失誤。"
+  trigger:
+    segment_type:
+      - Rough Patch
+    conditions:
+      - name: Expression
+        params:
+          expr: "context['distance_to_ai'] < 2.0"
+    probability: 0.4
+  options:
+    - key: A
+      text: 拉開安全距離
+      consequences:
+        - target: speed_module.speed
+          delta: { multiply: 0.9 }
+      feedback: []
+    - key: B
+      text: 緊追 AI，嘗試超車
+      consequences:
+        - target: handling_module.handling
+          delta: { multiply: 0.9 }
+        - target: race_info_module.position
+          delta: { add: 1 }
+      feedback: []
+  cooldown: 2

@@ -20,14 +20,18 @@ class TurnFlow:
         segment = self.get_current_segment()
         pre_state = self.car_state.summary()
 
+        # ← 用下面這個 context 取代舊的版本
         context = {
             "fuel": self.car_state.get("fuel_module.fuel"),
             "tire_wear": self.car_state.get("tire_module.tire_wear"),
             "distance_to_ai": 1.5,
             "slipstream_active": True,
-            "laps_completed": self.car_state.get("race_info_module.laps_completed")
+            "laps_completed": self.car_state.get("race_info_module.laps_completed"),
+            "last_lap_time": getattr(self, "last_lap_time", 0),
+            "target_lap_time": getattr(self, "target_lap_time", 0),
+            "gap_to_trailer": self.car_state.get("race_info_module.gap_to_leader") or 0,
+            "num_ai_adjacent": getattr(self, "num_ai_adjacent", 0),
         }
-
         triggered_event = None
         triggered_name = "None"
         candidates = []
