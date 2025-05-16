@@ -75,10 +75,17 @@ class TurnFlow:
                     if event.mutex:
                         triggered_mutex.add(event.mutex)
 
-        # 計算段落用時
-        speed = self.car_state.get('speed_module.speed') or 1
-        length = getattr(segment, 'length', 1)
-        base_time = length / speed
+        # 計算段落用時（單位轉換：速度 km/h → m/s，長度 m）
+        speed_kmh = self.car_state.get('speed_module.speed') or 1
+        # km/h → m/s：除以 3.6
+        speed_mps = speed_kmh / 3.6
+        length_m = getattr(segment, 'length', 1)   # 賽道切片長度單位為公尺 :contentReference[oaicite:0]{index=0}:contentReference[oaicite:1]{index=1}
+        # 避免除以零
+        if speed_mps <= 0:
+            base_time = float('inf')
+        else:
+            base_time = length_m / speed_mps
+
         segment_time = base_time
         self.current_lap_time += segment_time
         self.total_time += segment_time
