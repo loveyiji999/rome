@@ -1,77 +1,68 @@
 import yaml
-import random
 from pathlib import Path
 from core.condition_parser import evaluate_condition
-
+import random
 class Event:
     def __init__(self, data):
         self.id = data["id"]
         self.category = data["category"]
         self.name = data["name"]
         self.description = data["description"]
-        self.trigger = data["trigger"]
-        self.options = data["options"]
+        self.trigger = data.get("trigger", {})
+        self.options = data.get("options", [])
         self.cooldown = data.get("cooldown", 0)
         self.cooldown_remaining = 0
         self.mutex = data.get("mutex")
+        # 嚴重度分級 (可選): low, medium, high
+        self.severity = data.get("severity", "medium")
 
     def is_triggered(self, segment, car_state, random_obj, context):
+        # 冷卻中不可觸發
         if self.cooldown_remaining > 0:
             return False
-
+        # 區段篩選
         if segment.track_type.value not in self.trigger.get("segment_type", []):
             return False
-
+        # 條件判斷
         for cond in self.trigger.get("conditions", []):
             if not evaluate_condition(cond, car_state, context):
                 return False
-
-        prob = self.trigger.get("probability", 0.0)
-        # 動態機率加成（可選）
+        # 計算觸發機率 (含動態加成)
+        base_prob = self.trigger.get("probability", 0.0)
+        total_prob = base_prob
         for dp in self.trigger.get("dynamic_probability", []):
-            if evaluate_condition(dp, car_state, context):
-                prob += dp.get("bonus", 0.0)
-        # 限制最大不超過 1.0
-        prob = min(prob, 1.0)
-        return random_obj.random() < prob
+            # dp 範例: {name: ..., params: {...}, bonus: 0.2}
+            cond_def = {"name": dp.get("name"), "params": dp.get("params", {})}
+            if evaluate_condition(cond_def, car_state, context):
+                total_prob += dp.get("bonus", 0)
+        # 上限 1.0
+        total_prob = min(total_prob, 1.0)
+        # 隨機判定
+        return random_obj.random() < total_prob
 
     def apply_option(self, option_key, car_state):
-        """
-        Apply the chosen option's consequences to car_state,
-        and return a randomly selected feedback message (or None).
-        """
         for opt in self.options:
             if opt["key"] == option_key:
-                # 1. apply consequences
                 for effect in opt.get("consequences", []):
-                    target = effect["target"]
-                    delta = effect["delta"]
+                    target = effect.get("target")
+                    delta = effect.get("delta", {})
                     for method, value in delta.items():
                         car_state.apply_change(target, method, value)
-
-                # 2. pick feedback
-                feedback_list = opt.get("feedback", [])
-                if feedback_list:
-                    feedback_msg = random.choice(feedback_list)
-                    # If you later want templating, you can uncomment and adapt:
-                    # feedback_msg = feedback_msg.format(
-                    #     speed=car_state.get('speed_module.speed'),
-                    #     tire_wear=car_state.get('tire_module.tire_wear'),
-                    #     gap=car_state.get('race_info_module.gap_to_leader')
-                    # )
-                    return feedback_msg
-                return None
-
-        raise ValueError(f"選項 {option_key} 不存在於事件 {self.id}")  # :contentReference[oaicite:0]{index=0}:contentReference[oaicite:1]{index=1}
+                return
+        raise ValueError(f"選項 {option_key} 不存在於事件 {self.id}")
 
     def get_option_keys(self):
-        return [opt["key"] for opt in self.options]
+        return [opt.get("key") for opt in self.options]
+
 
 def load_events_from_folder(folder_path="events"):
     events = []
     for filename in Path(folder_path).glob("*.yaml"):
         with open(filename, "r", encoding="utf-8") as f:
             raw = yaml.safe_load(f)
-            for e in raw:
-                events.append(Event(e))
+            for data in raw:
+                events.append(Event(data))
+    # 根據 severity 排序: high > medium > low
+    severity_order = {"high": 0, "medium": 1, "low": 2}
+    events.sort(key=lambda e: severity_order.get(e.severity, 1))
     return events
