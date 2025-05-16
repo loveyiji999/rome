@@ -51,11 +51,8 @@ class TurnFlow:
         print(f"\n--- 事件：{event.name} ---")
         if hasattr(event, 'description'):
             print(event.description)
-        # 顯示所有選項及其影響
         for idx, opt in enumerate(event.options, start=1):
-            # 選項文字：優先取 text，再取 description，最後 fallback key
             text = opt.get('text') or opt.get('description') or opt.get('key')
-            # 解析影響
             impact_list = []
             for cons in opt.get('consequences', []):
                 target = cons.get('target')
@@ -69,7 +66,6 @@ class TurnFlow:
                     impact_list.append(f"{target} = {delta['set']}")
             impact = ', '.join(impact_list)
             print(f"  {idx}. ({opt['key']}) {text}    影響：{impact}")
-        # 讀取玩家輸入
         while True:
             choice_str = input(f"請輸入選項 (1~{len(event.options)}): ")
             try:
@@ -84,7 +80,7 @@ class TurnFlow:
         segment = self.get_current_segment()
         pre_state = self.car_state.summary()
 
-        # 動態更新速度與 Context
+        # 更新速度
         self.update_speed_for_segment(segment)
         speed = self.car_state.get('speed_module.speed') or 0
 
@@ -94,6 +90,20 @@ class TurnFlow:
         except KeyError:
             slip_dist_thresh = None
         threshold = slip_dist_thresh if slip_dist_thresh is not None else 10
+
+        # 確保上下文鍵存在且安全取得
+        try:
+            target_lap_time = self.car_state.get('race_info_module.target_lap_time')
+        except KeyError:
+            target_lap_time = self.last_lap_time or 0
+        try:
+            gap_to_trailer = self.car_state.get('race_info_module.gap_to_trailer')
+        except KeyError:
+            gap_to_trailer = float('inf')
+        try:
+            num_ai_adjacent = self.car_state.get('race_info_module.num_ai_adjacent')
+        except KeyError:
+            num_ai_adjacent = 0
 
         context = {
             'fuel': self.car_state.get('fuel_module.fuel') or 0,
@@ -107,8 +117,11 @@ class TurnFlow:
             'durability': self.car_state.get('durability_module.durability') or 0,
             'position': self.car_state.get('race_info_module.position') or 0,
             'gap_to_leader': self.car_state.get('race_info_module.gap_to_leader') or float('inf'),
+            'gap_to_trailer': gap_to_trailer,
+            'num_ai_adjacent': num_ai_adjacent,
             'laps_completed': self.laps_completed,
             'last_lap_time': self.last_lap_time,
+            'target_lap_time': target_lap_time,
             'distance_to_ai': self.distance_to_ai,
             'slipstream_active': (
                 segment.track_type in (TrackType.STRAIGHT, TrackType.LONG_STRAIGHT)
@@ -121,13 +134,19 @@ class TurnFlow:
             'top_speed': self.car_state.get('speed_module.top_speed') or speed
         }
 
-        # 印出 context 以便驗證動態屬性
-        print(f"Context: {context}")
+        # 只印出核心 Context
+        brief_ctx = {
+            'speed': context['speed'],
+            'fuel': context['fuel'],
+            'tire_wear': context['tire_wear'],
+            'laps_completed': context['laps_completed']
+        }
+        #print(f"→ Context (核心): {brief_ctx}")
 
         triggered_event = None
+        triggered_name = 'None'
         option_key = None
         feedback = None
-        triggered_name = 'None'
         candidates = []
         triggered_mutex = set()
 
@@ -139,7 +158,7 @@ class TurnFlow:
                 if not triggered_event:
                     triggered_event = event
                     triggered_name = event.name
-                    # 玩家或 AI 選擇
+                    state_before = self.car_state.summary()
                     if self.is_player:
                         option_key = self.prompt_player_choice(event)
                     else:
@@ -148,22 +167,26 @@ class TurnFlow:
                     event.cooldown_remaining = event.cooldown
                     if event.mutex:
                         triggered_mutex.add(event.mutex)
+                    if not feedback:
+                        state_after = self.car_state.summary()
+                        changes = {}
+                        for k, v_after in state_after.items():
+                            v_before = state_before.get(k)
+                            if isinstance(v_after, (int, float)) and v_before is not None and v_after != v_before:
+                                changes[k] = round(v_after - v_before, 4)
+                        feedback = f"屬性變化：{changes}"
 
-        # 計算段落用時
+        # 計算時間與燃料消耗...
         speed_mps = speed / 3.6 if speed > 0 else 0
         length_m = getattr(segment, 'length', 0)
         base_time = length_m / speed_mps if speed_mps > 0 else float('inf')
         segment_time = base_time
-
         self.current_lap_time += segment_time
         self.total_time += segment_time
-
-        # 油量消耗
         cons_rate = self.car_state.get('fuel_module.consumption_rate') or 0
         fuel_used = cons_rate * segment_time
         self.car_state.apply_change('fuel_module.fuel', 'add', -fuel_used)
 
-        # 更新圈數
         if self.current_turn % len(self.segments) == 0:
             self.laps_completed += 1
             self.last_lap_time = self.current_lap_time
@@ -178,17 +201,18 @@ class TurnFlow:
             'option': option_key,
             'pre_state': pre_state,
             'post_state': post_state,
-            'context': context.copy(),
+            'context': brief_ctx.copy(),
             'time': segment_time
         })
 
         print(f"第 {self.current_turn} 回合 - 區段：{segment.track_type.value} - 候選事件：{candidates}")
         if triggered_event:
-            print(f"→ 實際觸發事件：{triggered_event.name}，選擇：{option_key}，反饋：{feedback}")
+            print(f"→ 實際觸發事件：{triggered_name}，選擇：{option_key}")
+            print(f"   回饋：{feedback}")
 
         for ev in self.all_events:
             if ev.cooldown_remaining > 0:
                 ev.cooldown_remaining -= 1
         apply_logic_rules(self.car_state)
 
-        return segment_time 
+        return segment_time
