@@ -22,9 +22,21 @@ class TrackSegment:
         self.id = segment_id
         self.track_type = track_type
         self.attributes = attributes
+        # 事件基礎機率
         self.base_event_chance = attributes.get("base_event_chance", 0.05)
+        # 建議速度 (km/h)
         self.recommended_speed = attributes.get("recommended_speed", None)
+        # 預估平均時間 (s)
         self.avg_time = attributes.get("estimated_avg_time", None)
+        # 賽道長度 (m)，若未提供則使用 avg_time * recommended_speed轉換，否則為0
+        length_val = attributes.get("length", None)
+        if length_val is not None:
+            self.length = length_val
+        elif self.avg_time is not None and self.recommended_speed:
+            # km/h -> m/s = /3.6, time(s) * speed(m/s) = distance(m)
+            self.length = self.avg_time * (self.recommended_speed / 3.6)
+        else:
+            self.length = 0
 
     def __repr__(self):
         return f"<Segment {self.id} - {self.track_type.value}>"

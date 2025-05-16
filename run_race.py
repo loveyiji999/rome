@@ -19,7 +19,7 @@ def main(laps):
     events = load_events_from_folder("data/events")            # 事件資料夾 :contentReference[oaicite:2]{index=2}:contentReference[oaicite:3]{index=3}
 
     # 3. 建立並執行 Race
-    race = Race([player, ai1, ai2], segments, events, seed=2025)
+    race = Race([player, ai1, ai2], segments, events, seed=1)
     race.run(laps)
 
     # 4. 列印最終排名
