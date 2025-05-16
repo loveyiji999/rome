@@ -15,6 +15,7 @@
 - id: MC1
   track_type: Medium Corner
   attributes:
+    length: 300
     radius: 80
     base_event_chance: 0.06
     recommended_speed: 200
@@ -22,6 +23,7 @@
 - id: SC1
   track_type: Slow Corner
   attributes:
+    length: 200
     radius: 45
     base_event_chance: 0.07
     recommended_speed: 120
@@ -29,6 +31,7 @@
 - id: CH1
   track_type: Chicane
   attributes:
+    length: 200
     sequence_count: 2
     base_event_chance: 0.08
     recommended_speed: 140
@@ -36,6 +39,7 @@
 - id: UP1
   track_type: Uphill
   attributes:
+    length: 300
     grade: 5
     base_event_chance: 0.05
     recommended_speed: 220
@@ -43,6 +47,7 @@
 - id: DW1
   track_type: Downhill
   attributes:
+    length: 300
     grade: -6
     base_event_chance: 0.06
     recommended_speed: 250
@@ -50,6 +55,7 @@
 - id: RP1
   track_type: Rough Patch
   attributes:
+    length: 150
     hazard_level: 0.3
     base_event_chance: 0.09
     recommended_speed: 180
@@ -57,6 +63,7 @@
 - id: WS1
   track_type: Wet Section
   attributes:
+    length: 100
     friction_coefficient: 0.6
     base_event_chance: 0.1
     recommended_speed: 150
@@ -71,6 +78,7 @@
 - id: CW1
   track_type: Crosswind Zone
   attributes:
+    length: 200
     wind_speed: 20
     base_event_chance: 0.08
     recommended_speed: 200
@@ -78,6 +86,7 @@
 - id: HP1
   track_type: Hairpin Return
   attributes:
+    length: 200
     angle: 160
     base_event_chance: 0.06
     recommended_speed: 100
