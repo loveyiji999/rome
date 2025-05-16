@@ -44,6 +44,41 @@ class TurnFlow:
         val = self.random.gauss(mu, sigma)
         return max(1, min(10, round(val)))
 
+    def prompt_player_choice(self, event):
+        """
+        顯示事件名稱、敘述，以及每個選項的 text 和其影響，等待玩家輸入回傳 key。
+        """
+        print(f"\n--- 事件：{event.name} ---")
+        if hasattr(event, 'description'):
+            print(event.description)
+        # 顯示所有選項及其影響
+        for idx, opt in enumerate(event.options, start=1):
+            # 選項文字：優先取 text，再取 description，最後 fallback key
+            text = opt.get('text') or opt.get('description') or opt.get('key')
+            # 解析影響
+            impact_list = []
+            for cons in opt.get('consequences', []):
+                target = cons.get('target')
+                delta = cons.get('delta', {})
+                if 'add' in delta:
+                    v = delta['add']
+                    impact_list.append(f"{target} {'+' if v>=0 else ''}{v}")
+                elif 'multiply' in delta:
+                    impact_list.append(f"{target} x{delta['multiply']}")
+                elif 'set' in delta:
+                    impact_list.append(f"{target} = {delta['set']}")
+            impact = ', '.join(impact_list)
+            print(f"  {idx}. ({opt['key']}) {text}    影響：{impact}")
+        # 讀取玩家輸入
+        while True:
+            choice_str = input(f"請輸入選項 (1~{len(event.options)}): ")
+            try:
+                choice = int(choice_str)
+                if 1 <= choice <= len(event.options):
+                    return event.options[choice - 1]['key']
+            except ValueError:
+                pass
+
     def simulate_turn(self):
         self.current_turn += 1
         segment = self.get_current_segment()
@@ -104,7 +139,11 @@ class TurnFlow:
                 if not triggered_event:
                     triggered_event = event
                     triggered_name = event.name
-                    option_key = self.choose_option_for_ai(event)
+                    # 玩家或 AI 選擇
+                    if self.is_player:
+                        option_key = self.prompt_player_choice(event)
+                    else:
+                        option_key = self.choose_option_for_ai(event)
                     feedback = event.apply_option(option_key, self.car_state)
                     event.cooldown_remaining = event.cooldown
                     if event.mutex:
@@ -152,4 +191,4 @@ class TurnFlow:
                 ev.cooldown_remaining -= 1
         apply_logic_rules(self.car_state)
 
-        return segment_time
+        return segment_time 
