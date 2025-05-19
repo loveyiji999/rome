@@ -41,6 +41,7 @@ class Event:
         return random_obj.random() < total_prob
 
     def apply_option(self, option_key, car_state):
+        """Apply the chosen option and return a random feedback string if any."""
         for opt in self.options:
             if opt["key"] == option_key:
                 for effect in opt.get("consequences", []):
@@ -48,7 +49,8 @@ class Event:
                     delta = effect.get("delta", {})
                     for method, value in delta.items():
                         car_state.apply_change(target, method, value)
-                return
+                feedback_pool = opt.get("feedback", [])
+                return random.choice(feedback_pool) if feedback_pool else None
         raise ValueError(f"選項 {option_key} 不存在於事件 {self.id}")
 
     def get_option_keys(self):
