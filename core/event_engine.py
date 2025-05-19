@@ -48,7 +48,8 @@ class Event:
                     delta = effect.get("delta", {})
                     for method, value in delta.items():
                         car_state.apply_change(target, method, value)
-                return
+                feedback_pool = opt.get("feedback", [])
+                return random.choice(feedback_pool) if feedback_pool else None
         raise ValueError(f"選項 {option_key} 不存在於事件 {self.id}")
 
     def get_option_keys(self):
