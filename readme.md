@@ -12,3 +12,18 @@
 ## 執行範例
 ```bash
 python scripts/main.py
+```
+
+## 事件觸發優化機制
+
+事件 YAML 新增 `solo` 與 `max_per_segment` 兩欄位，系統會依事件 `category` 及路段類型決定同一回合可堆疊的事件數。若事件設為 `solo: true`，當回合僅會執行該事件。
+
+```yaml
+- id: sample_event
+  category: fault
+  solo: false
+  max_per_segment: 1
+  priority: 3
+```
+
+更完整的規則實作可參考 `core/turn_flow.py`。

@@ -48,6 +48,8 @@
     - "外線表現穩健成功罷過，然而內側最佳機會已經錯失。"
   cooldown: 2
   priority: 5
+  solo: false
+  max_per_segment: 1
   mutex: ai_attack
 
 - id: ai_draft_break

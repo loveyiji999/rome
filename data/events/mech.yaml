@@ -34,6 +34,8 @@
     feedback: []
   cooldown: 2
   priority: 4
+  solo: false
+  max_per_segment: 2
   mutex: tire
 - id: mech_gearbox_jam
   category: 機械事件

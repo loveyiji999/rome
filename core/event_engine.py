@@ -17,6 +17,10 @@ class Event:
         self.severity = data.get("severity", "medium")
         # 事件優先級，數字越大代表越優先
         self.priority = data.get("priority", 0)
+        # 是否為獨佔事件，獨佔事件一旦觸發，當回合只執行此事件
+        self.solo = data.get("solo", False)
+        # 自訂該事件可與同類事件在同一區段堆疊的數量上限
+        self.max_per_segment = data.get("max_per_segment")
 
     def is_triggered(self, segment, car_state, random_obj, context):
         # 冷卻中不可觸發
