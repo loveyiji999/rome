@@ -1,5 +1,5 @@
 - id: S1_custom1
-  title: low_speed_stright
+  title: low_speed_straight
   track_type: S1
   attributes:
     length: 150.0
