@@ -35,6 +35,7 @@
         add: 10
     feedback: []
   cooldown: 2
+  priority: 2
 - id: strat_fuel_strategy_update
   category: 策略事件
   name: 燃油策略更新

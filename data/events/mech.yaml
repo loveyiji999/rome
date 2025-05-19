@@ -33,6 +33,7 @@
         multiply: 0.9
     feedback: []
   cooldown: 2
+  priority: 4
   mutex: tire
 - id: mech_gearbox_jam
   category: 機械事件
