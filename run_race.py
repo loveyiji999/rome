@@ -15,8 +15,8 @@ def main(laps):
     ai2.name = "AI Racer 2"
 
     # 2. 載入賽道與事件
-    segments = load_track_segments("data/track_config.yaml")   # 賽道設定檔路徑 :contentReference[oaicite:0]{index=0}:contentReference[oaicite:1]{index=1}
-    events = load_events_from_folder("data/events")            # 事件資料夾 :contentReference[oaicite:2]{index=2}:contentReference[oaicite:3]{index=3}
+    segments = load_track_segments("data/track_config.yaml")   # 賽道設定檔路徑
+    events = load_events_from_folder("data/events")            # 事件資料夾
 
     # 3. 建立並執行 Race
     race = Race([player, ai1, ai2], segments, events, seed=66666)
