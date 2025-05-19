@@ -2,6 +2,29 @@ import random
 from core.logic_rules import apply_logic_rules
 from core.track_loader import TrackType
 
+# 類別事件的全局預設上限
+CATEGORY_DEFAULTS = {
+    'fault': 2,
+    'tactic': 1,
+    'env_warning': float('inf'),
+}
+
+# 依路段類型調整的上限
+SEGMENT_LIMITS = {
+    TrackType.STRAIGHT: {'fault': 1, 'tactic': 1, 'env_warning': float('inf')},
+    TrackType.LONG_STRAIGHT: {'fault': 1, 'tactic': 1, 'env_warning': float('inf')},
+    TrackType.UPHILL: {'fault': 1, 'tactic': 1, 'env_warning': float('inf')},
+    TrackType.DOWNHILL: {'fault': 1, 'tactic': 1, 'env_warning': float('inf')},
+    TrackType.MEDIUM_CORNER: {'fault': 2, 'tactic': 1, 'env_warning': float('inf')},
+    TrackType.SLOW_CORNER: {'fault': 2, 'tactic': 1, 'env_warning': float('inf')},
+    TrackType.CHICANE: {'fault': 2, 'tactic': 1, 'env_warning': float('inf')},
+    TrackType.HAIRPIN_RETURN: {'fault': 2, 'tactic': 1, 'env_warning': float('inf')},
+    TrackType.PIT_ENTRY: {'fault': 2, 'tactic': 2, 'env_warning': float('inf')},
+    TrackType.ROUGH_PATCH: {'fault': 1, 'tactic': 1, 'env_warning': float('inf')},
+    TrackType.WET_SECTION: {'fault': 1, 'tactic': 1, 'env_warning': float('inf')},
+    TrackType.CROSSWIND_ZONE: {'fault': 1, 'tactic': 1, 'env_warning': float('inf')},
+}
+
 class TurnFlow:
     def __init__(self, car_state, segments, seed=None, events=None, is_player=False, personality='balanced'):
         self.car_state = car_state
@@ -145,39 +168,61 @@ class TurnFlow:
         }
         #print(f"→ Context (核心): {brief_ctx}")
 
-        triggered_event = None
-        triggered_name = 'None'
-        option_key = None
-        feedback = None
         candidates = []
-        triggered_mutex = set()
+        triggered_events = []
 
-        # 事件列表已依 severity 與 priority 排序，取第一個觸發的事件
+        # 收集所有觸發的事件，稍後再決定要執行哪些
         for event in self.all_events:
-            if event.mutex and event.mutex in triggered_mutex:
-                continue
             if event.is_triggered(segment, self.car_state, self.random, context):
                 candidates.append(f"{event.name}(p{event.priority})")
-                if not triggered_event:
-                    triggered_event = event
-                    triggered_name = event.name
-                    state_before = self.car_state.summary()
-                    if self.is_player:
-                        option_key = self.prompt_player_choice(event)
-                    else:
-                        option_key = self.choose_option_for_ai(event)
-                    feedback = event.apply_option(option_key, self.car_state)
-                    event.cooldown_remaining = event.cooldown
-                    if event.mutex:
-                        triggered_mutex.add(event.mutex)
-                    if not feedback:
-                        state_after = self.car_state.summary()
-                        changes = {}
-                        for k, v_after in state_after.items():
-                            v_before = state_before.get(k)
-                            if isinstance(v_after, (int, float)) and v_before is not None and v_after != v_before:
-                                changes[k] = round(v_after - v_before, 4)
-                        feedback = f"屬性變化：{changes}"
+                triggered_events.append(event)
+
+        # 依優先度由高到低排序
+        triggered_events.sort(key=lambda e: -getattr(e, 'priority', 0))
+
+        selected_events = []
+        option_keys = []
+        feedbacks = []
+
+        # 處理獨佔事件
+        solo_candidates = [e for e in triggered_events if getattr(e, 'solo', False)]
+        if solo_candidates:
+            selected_events = [max(solo_candidates, key=lambda e: e.priority)]
+        else:
+            seg_limits = SEGMENT_LIMITS.get(segment.track_type, CATEGORY_DEFAULTS)
+            counts = {'fault': 0, 'tactic': 0, 'env_warning': 0}
+            used_mutex = set()
+            for ev in triggered_events:
+                cat = getattr(ev, 'category', None)
+                limit = ev.max_per_segment if ev.max_per_segment is not None else seg_limits.get(cat, CATEGORY_DEFAULTS.get(cat, 1))
+                if counts.get(cat, 0) >= limit:
+                    continue
+                if ev.mutex and ev.mutex in used_mutex:
+                    continue
+                selected_events.append(ev)
+                counts[cat] = counts.get(cat, 0) + 1
+                if ev.mutex:
+                    used_mutex.add(ev.mutex)
+
+        # 依序執行選定的事件
+        for ev in selected_events:
+            state_before = self.car_state.summary()
+            if self.is_player:
+                key = self.prompt_player_choice(ev)
+            else:
+                key = self.choose_option_for_ai(ev)
+            fb = ev.apply_option(key, self.car_state)
+            ev.cooldown_remaining = ev.cooldown
+            if not fb:
+                state_after = self.car_state.summary()
+                changes = {}
+                for k, v_after in state_after.items():
+                    v_before = state_before.get(k)
+                    if isinstance(v_after, (int, float)) and v_before is not None and v_after != v_before:
+                        changes[k] = round(v_after - v_before, 4)
+                fb = f"屬性變化：{changes}"
+            option_keys.append(key)
+            feedbacks.append(fb)
 
         # 計算時間與燃料消耗...
         speed_mps = speed / 3.6 if speed > 0 else 0
@@ -196,12 +241,17 @@ class TurnFlow:
             self.current_lap_time = 0.0
 
         post_state = self.car_state.summary()
+        event_names = [ev.name for ev in selected_events]
+        first_name = event_names[0] if event_names else 'None'
+        first_option = option_keys[0] if option_keys else None
         self.log.append({
             'turn': self.current_turn,
             'segment': getattr(segment, 'id', None),
             'segment_type': segment.track_type.value,
-            'event': triggered_name,
-            'option': option_key,
+            'event': first_name,
+            'option': first_option,
+            'events': event_names,
+            'options': option_keys,
             'pre_state': pre_state,
             'post_state': post_state,
             'context': brief_ctx.copy(),
@@ -209,9 +259,12 @@ class TurnFlow:
         })
 
         print(f"第 {self.current_turn} 回合 - 區段：{segment.track_type.value} - 候選事件：{candidates}")
-        if triggered_event:
-            print(f"→ 實際觸發事件：{triggered_name}，選擇：{option_key}")
-            print(f"   回饋：{feedback}")
+        if selected_events:
+            joined_names = ','.join(event_names)
+            joined_opts = ','.join(option_keys)
+            print(f"→ 實際觸發事件：{joined_names}，選擇：{joined_opts}")
+            for fb in feedbacks:
+                print(f"   回饋：{fb}")
 
         for ev in self.all_events:
             if ev.cooldown_remaining > 0:
