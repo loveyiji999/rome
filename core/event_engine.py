@@ -43,6 +43,7 @@ class Event:
         return random_obj.random() < total_prob
 
     def apply_option(self, option_key, car_state):
+        """Apply the chosen option and return a random feedback string if any."""
         for opt in self.options:
             if opt["key"] == option_key:
                 for effect in opt.get("consequences", []):

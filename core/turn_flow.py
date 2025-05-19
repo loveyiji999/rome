@@ -78,6 +78,7 @@ class TurnFlow:
                 pass
 
     def simulate_turn(self):
+        """Simulate one turn and print any event feedback text."""
         self.current_turn += 1
         segment = self.get_current_segment()
         pre_state = self.car_state.summary()
@@ -166,6 +167,7 @@ class TurnFlow:
                         option_key = self.prompt_player_choice(event)
                     else:
                         option_key = self.choose_option_for_ai(event)
+                    # Apply the option and retrieve any feedback text
                     feedback = event.apply_option(option_key, self.car_state)
                     event.cooldown_remaining = event.cooldown
                     if event.mutex:
