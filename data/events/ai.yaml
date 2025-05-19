@@ -47,6 +47,7 @@
     - "你靈活地繞出內線，安全通過，但被對手略微超前。"
     - "外線表現穩健成功罷過，然而內側最佳機會已經錯失。"
   cooldown: 2
+  priority: 5
   mutex: ai_attack
 
 - id: ai_draft_break

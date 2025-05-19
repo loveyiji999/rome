@@ -15,6 +15,8 @@ class TurnFlow:
         self.seed = seed or random.randint(1000, 999999)
         self.random = random.Random(self.seed)
         self.all_events = events or []
+        severity_order = {"high": 0, "medium": 1, "low": 2}
+        self.all_events.sort(key=lambda e: (severity_order.get(getattr(e, 'severity', 'medium'), 1), -getattr(e, 'priority', 0)))
         self.is_player = is_player
         self.personality = personality
         self.distance_to_ai = float('inf')
@@ -150,11 +152,12 @@ class TurnFlow:
         candidates = []
         triggered_mutex = set()
 
+        # 事件列表已依 severity 與 priority 排序，取第一個觸發的事件
         for event in self.all_events:
             if event.mutex and event.mutex in triggered_mutex:
                 continue
             if event.is_triggered(segment, self.car_state, self.random, context):
-                candidates.append(event.name)
+                candidates.append(f"{event.name}(p{event.priority})")
                 if not triggered_event:
                     triggered_event = event
                     triggered_name = event.name

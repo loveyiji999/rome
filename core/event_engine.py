@@ -15,6 +15,8 @@ class Event:
         self.mutex = data.get("mutex")
         # 嚴重度分級 (可選): low, medium, high
         self.severity = data.get("severity", "medium")
+        # 事件優先級，數字越大代表越優先
+        self.priority = data.get("priority", 0)
 
     def is_triggered(self, segment, car_state, random_obj, context):
         # 冷卻中不可觸發
@@ -63,7 +65,7 @@ def load_events_from_folder(folder_path="events"):
             raw = yaml.safe_load(f)
             for data in raw:
                 events.append(Event(data))
-    # 根據 severity 排序: high > medium > low
+    # 根據 severity 與 priority 排序: high > medium > low，再依 priority 倒序
     severity_order = {"high": 0, "medium": 1, "low": 2}
-    events.sort(key=lambda e: severity_order.get(e.severity, 1))
+    events.sort(key=lambda e: (severity_order.get(e.severity, 1), -e.priority))
     return events
